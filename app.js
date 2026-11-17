@@ -3,9 +3,9 @@
 // Kolam UI, line icons, accessibility, native text-to-speech in the Android app and a few bug fixes.
 
 // ---------- word bank (pictures are emoji so every word has a clear, consistent picture) ----------
-const W3=[["cat","🐱"],["dog","🐶"],["sun","☀️"],["bus","🚌"],["hat","🎩"],["pig","🐷"],["cup","☕"],["bed","🛏️"],["egg","🥚"],["fox","🦊"],["ant","🐜"],["bee","🐝"],["owl","🦉"],["cow","🐮"],["key","🔑"],["box","📦"],["car","🚗"],["map","🗺️"],["bat","🦇"],["cap","🧢"],["web","🕸️"],["nut","🥜"],["pan","🍳"],["pen","🖊️"],["gem","💎"],["van","🚐"],["axe","🪓"],["ear","👂"],["hen","🐔"],["log","🪵"],["bag","👜"],["bow","🎀"],["leg","🦵"],["eye","👁️"],["ram","🐏"],["rat","🐀"],["pie","🥧"],["tea","🍵"],["ice","🧊"],["bug","🐛"],["saw","🪚"],["tie","👔"]];
-const W4=[["fish","🐟"],["frog","🐸"],["duck","🦆"],["cake","🍰"],["star","⭐"],["moon","🌙"],["tree","🌳"],["ship","🚢"],["lion","🦁"],["bear","🐻"],["milk","🥛"],["ball","⚽"],["boat","⛵"],["kite","🪁"],["rain","🌧️"],["book","📖"],["drum","🥁"],["sock","🧦"],["corn","🌽"],["bell","🔔"],["bone","🦴"],["crab","🦀"],["deer","🦌"],["gift","🎁"],["goat","🐐"],["rose","🌹"],["seal","🦭"],["tent","⛺"],["wolf","🐺"],["bird","🐦"],["door","🚪"],["shoe","👟"],["hand","✋"],["foot","🦶"],["nose","👃"],["king","🤴"],["ring","💍"],["leaf","🍃"],["bike","🚲"],["lock","🔒"],["taxi","🚕"],["pear","🍐"],["kiwi","🥝"],["rice","🍚"],["coat","🧥"],["hook","🪝"],["snow","❄️"],["fire","🔥"],["wave","🌊"],["rock","🪨"],["sled","🛷"],["bowl","🥣"],["cart","🛒"],["worm","🪱"],["dice","🎲"],["flag","🚩"],["sofa","🛋️"],["swan","🦢"],["bull","🐂"],["palm","🌴"],["bulb","💡"],["vest","🦺"],["soup","🍲"]];
-const W5=[["apple","🍎"],["house","🏠"],["horse","🐴"],["grape","🍇"],["train","🚆"],["snake","🐍"],["tiger","🐯"],["zebra","🦓"],["clock","⏰"],["bread","🍞"],["chair","🪑"],["whale","🐳"],["pizza","🍕"],["robot","🤖"],["camel","🐫"],["crown","👑"],["ghost","👻"],["koala","🐨"],["lemon","🍋"],["panda","🐼"],["piano","🎹"],["shark","🦈"],["snail","🐌"],["tulip","🌷"],["sheep","🐑"],["mouse","🐭"],["juice","🧃"],["heart","❤️"],["cloud","☁️"],["plane","✈️"],["truck","🚚"],["shell","🐚"],["skunk","🦨"],["sloth","🦥"],["otter","🦦"],["eagle","🦅"],["llama","🦙"],["bison","🦬"],["mango","🥭"],["melon","🍈"],["peach","🍑"],["onion","🧅"],["candy","🍬"],["chick","🐤"],["dress","👗"],["shirt","👕"],["glove","🧤"],["boots","👢"],["pants","👖"],["broom","🧹"],["spoon","🥄"],["knife","🔪"],["tooth","🦷"],["watch","⌚"],["phone","📱"],["bunny","🐰"],["globe","🌍"],["beach","🏖️"],["queen","👸"]];
+const W3=[["cat","🐱"],["dog","🐶"],["sun","☀️"],["bus","🚌"],["hat","🎩"],["pig","🐷"],["cup","☕"],["bed","🛏️"],["egg","🥚"],["fox","🦊"],["ant","🐜"],["bee","🐝"],["owl","🦉"],["cow","🐮"],["key","🔑"],["box","📦"],["car","🚗"],["map","🗺️"],["bat","🦇"],["cap","🧢"],["web","🕸️"],["nut","🥜"],["pan","🍳"],["pen","🖊️"],["gem","💎"],["van","🚐"],["axe","🪓"],["ear","👂"],["hen","🐔"],["log","🪵"],["bag","👜"],["bow","🎀"],["leg","🦵"],["eye","👁️"],["pie","🥧"],["tea","🍵"],["ice","🧊"],["saw","🪚"]];
+const W4=[["fish","🐟"],["frog","🐸"],["duck","🦆"],["cake","🍰"],["star","⭐"],["moon","🌙"],["tree","🌳"],["ship","🚢"],["lion","🦁"],["bear","🐻"],["milk","🥛"],["ball","⚽"],["boat","⛵"],["kite","🪁"],["rain","🌧️"],["book","📖"],["drum","🥁"],["sock","🧦"],["corn","🌽"],["bell","🔔"],["bone","🦴"],["crab","🦀"],["deer","🦌"],["gift","🎁"],["goat","🐐"],["rose","🌹"],["seal","🦭"],["tent","⛺"],["wolf","🐺"],["bird","🐦"],["door","🚪"],["shoe","👟"],["hand","✋"],["foot","🦶"],["nose","👃"],["king","🤴"],["ring","💍"],["leaf","🍃"],["bike","🚲"],["lock","🔒"],["taxi","🚕"],["pear","🍐"],["kiwi","🥝"],["dove","🕊️"],["coat","🧥"],["salt","🧂"],["snow","❄️"],["fire","🔥"],["wave","🌊"],["rock","🪨"],["sled","🛷"],["bowl","🥣"],["soap","🧼"],["worm","🪱"],["dice","🎲"],["flag","🚩"],["sofa","🛋️"],["swan","🦢"],["yarn","🧶"],["taco","🌮"],["bulb","💡"],["vest","🦺"],["soup","🍲"],["lips","👄"]];
+const W5=[["apple","🍎"],["house","🏠"],["horse","🐴"],["grape","🍇"],["train","🚆"],["snake","🐍"],["tiger","🐯"],["zebra","🦓"],["clock","⏰"],["bread","🍞"],["chair","🪑"],["whale","🐳"],["pizza","🍕"],["robot","🤖"],["camel","🐫"],["crown","👑"],["ghost","👻"],["koala","🐨"],["lemon","🍋"],["panda","🐼"],["piano","🎹"],["shark","🦈"],["snail","🐌"],["tulip","🌷"],["sheep","🐑"],["mouse","🐭"],["juice","🧃"],["heart","❤️"],["cloud","☁️"],["plane","✈️"],["truck","🚚"],["shell","🐚"],["squid","🦑"],["sloth","🦥"],["otter","🦦"],["eagle","🦅"],["llama","🦙"],["salad","🥗"],["mango","🥭"],["scarf","🧣"],["peach","🍑"],["onion","🧅"],["candy","🍬"],["chick","🐤"],["dress","👗"],["shirt","👕"],["torch","🔦"],["ruler","📏"],["bacon","🥓"],["sushi","🍣"],["spoon","🥄"],["olive","🫒"],["tooth","🦷"],["watch","⌚"],["phone","📱"],["fries","🍟"],["globe","🌍"],["daisy","🌼"],["queen","👸"]];
 const BY_LEN={3:W3,4:W4,5:W5};
 const SENT=[
  {s:"The sun is ___.",a:"hot",o:["cold","wet","sad"],e:"☀️"},
@@ -22,7 +22,7 @@ const SENT=[
  {s:"The grass is ___.",a:"green",o:["red","purple","orange"],e:"🌱"},
  {s:"A duck says ___.",a:"quack",o:["moo","woof","oink"],e:"🦆"},
  {s:"I wear a ___ on my head.",a:"hat",o:["sock","shoe","glove"],e:"🎩"},
- {s:"We see with our ___.",a:"eyes",o:["ears","feet","hands"],e:"👀"},
+ {s:"We see with our ___.",a:"eyes",o:["ears","feet","hands"],e:"👁️"},
  {s:"A frog can ___.",a:"jump",o:["read","cook","drive"],e:"🐸"},
  {s:"Ice cream is ___.",a:"sweet",o:["loud","sad","tall"],e:"🍦"},
  {s:"At night I see the ___.",a:"moon",o:["sun","rainbow","bus"],e:"🌙"},
@@ -30,8 +30,8 @@ const SENT=[
  {s:"I eat soup with a ___.",a:"spoon",o:["shoe","hat","ball"],e:"🥣"}];
 // [word, opposite, picture, picture of the opposite, words that must not be offered as wrong choices]
 const OPP=[["big","small","🐘","🐭",["short"]],["hot","cold","🔥","🧊"],["up","down","⬆️","⬇️"],["happy","sad","😀","😢"],["fast","slow","🐇","🐢"],
- ["day","night","☀️","🌙"],["wet","dry","💧","🏜️"],["tall","short","🦒","🐁",["small"]],["old","young","👴","👶"],["loud","quiet","📢","🤫",["soft"]],
- ["hard","soft","🪨","🧸",["quiet"]],["left","right","⬅️","➡️"],["sweet","sour","🍭","🍋"],["awake","asleep","😃","😴"],["black","white","⬛","⬜"]];
+ ["day","night","☀️","🌙"],["wet","dry","💧","🏜️"],["tall","short","🦒","🐭",["small"]],["old","young","👴","👶"],["loud","quiet","📢","🤫",["soft"]],
+ ["hard","soft","🪨","🧸",["quiet"]],["left","right","⬅️","➡️"],["sweet","sour","🍬","🍋"],["awake","asleep","😃","😴"],["open","closed","🔓","🔒"]];
 const RHY=[["cat","hat","🐱","🎩"],["bee","tree","🐝","🌳"],["cake","lake","🍰","🏞️"],["moon","spoon","🌙","🥄"],["star","car","⭐","🚗"],
  ["fox","box","🦊","📦"],["king","ring","🤴","💍"],["bug","mug","🐞","☕"],["frog","log","🐸","🪵"],["goat","boat","🐐","⛵"],
  ["mouse","house","🐭","🏠"],["bear","chair","🐻","🪑"],["sock","clock","🧦","⏰"],["bell","shell","🔔","🐚"],["fish","dish","🐟","🍽️"]];
@@ -52,16 +52,20 @@ const ICON={
   replay:'<path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/>',
   map:'<path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2z"/><path d="M9 4v14M15 6v14"/>',
 };
+// Card pictures: Microsoft Fluent Emoji 3D (MIT), one PNG per emoji in img/, named by code points without FE0F.
+const artSrc=e=>"img/u"+[...e.replace(/\uFE0F/g,"")].map(c=>c.codePointAt(0).toString(16)).join("-")+".png";
+const art=(e,cls="")=>`<img class="art ${cls}" src="${artSrc(e)}" alt="" draggable="false" onerror="this.replaceWith(document.createTextNode('${e}'))">`;
+const levelPic=L=>L.words?L.words[0][1]:L.type==="sent"?L.items[0].e:L.items[0][2];
 const ic=(n,cls="k-icon")=>`<svg class="${cls}" viewBox="0 0 24 24" aria-hidden="true">${ICON[n]}</svg>`;
 const STAR='<path d="M12 2.8l2.8 5.7 6.3.9-4.55 4.4 1.07 6.25L12 17.1l-5.62 2.95 1.07-6.25L2.9 9.4l6.3-.9z"/>';
 const oneStar=`<svg class="star on" viewBox="0 0 24 24" aria-hidden="true">${STAR}</svg>`;
 const starRow=(s,cls="star")=>[1,2,3].map(i=>`<svg class="${cls}${i<=s?" on":""}" viewBox="0 0 24 24" aria-hidden="true">${STAR}</svg>`).join("");
 
 const TIERS=[
- {name:"Seedling",icon:"seedling",skill:"Match the picture to its word"},
- {name:"Sprout",icon:"sprout",skill:"Find the missing letter"},
- {name:"Sunflower",icon:"sunflower",skill:"Spell the whole word"},
- {name:"Big Tree",icon:"tree",skill:"Sentences, opposites and rhymes"}];
+ {name:"Seedling",icon:"seedling",e:"🌱",skill:"Match the picture to its word"},
+ {name:"Sprout",icon:"sprout",e:"🌿",skill:"Find the missing letter"},
+ {name:"Sunflower",icon:"sunflower",e:"🌻",skill:"Spell the whole word"},
+ {name:"Big Tree",icon:"tree",e:"🌳",skill:"Sentences, opposites and rhymes"}];
 // 4 stages × 10 levels, 5 cards each. Difficulty rises inside every stage.
 const PER_STAGE=10, PER_LEVEL=5;
 const CHOICES=[2,2,3,3,3,3,4,4,4,4], DECOYS=[0,0,0,1,1,1,2,2,2,3], BIG_CHOICES=[3,3,3,3,4,4,4,4,4,4];
@@ -121,14 +125,14 @@ function home(focusSel){
   const allDone=done>=LEVELS.length;
   let h=`<div class="top"><h1 class="brand">${LOGO}Word <span>Garden</span></h1><div class="pill" role="img" aria-label="${totalStars()} of ${LEVELS.length*3} stars">${oneStar} ${totalStars()} / ${LEVELS.length*3}</div></div>
   <p class="hello">${done?`You finished ${done} level${done>1?"s":""}. Your garden is growing!`:"Hi! Let’s grow your first words."}</p>
-  <div class="now"><span class="badge">${ic(allDone?"trophy":t.icon)}</span><div><small>${allDone?"Every level finished":"Your difficulty now"}</small><b>${allDone?"Word Master!":`${t.name} · Level ${next}`}</b><small>${allDone?"Replay any level to collect more stars":t.skill}</small></div>
+  <div class="now"><span class="badge">${art(allDone?"🏆":t.e)}</span><div><small>${allDone?"Every level finished":"Your difficulty now"}</small><b>${allDone?"Word Master!":`${t.name} · Level ${next}`}</b><small>${allDone?"Replay any level to collect more stars":t.skill}</small></div>
   <button class="k-btn k-btn-primary k-btn-lg chunky go" data-play="${allDone?1:next}">${allDone?"Play again":"Play level "+next}${ic("next")}</button></div><div class="home-grid">`;
   TIERS.forEach((tr,ti)=>{
-    h+=`<section class="tier" aria-labelledby="tier${ti}"><h2 id="tier${ti}"><span class="ti">${ic(tr.icon)}</span>${tr.name} <em>${tr.skill}</em></h2><div class="levels">`;
+    h+=`<section class="tier" aria-labelledby="tier${ti}"><h2 id="tier${ti}"><span class="ti">${art(tr.e)}</span>${tr.name} <em>${tr.skill}</em></h2><div class="levels">`;
     for(let k=1;k<=PER_STAGE;k++){
       const lv=ti*PER_STAGE+k, s=P.stars[lv]||0, locked=lv>next, isNext=lv===next&&!P.stars[lv];
       h+=`<button class="lv${isNext?" next":""}" data-play="${lv}" ${locked?"disabled":""} aria-label="Level ${lv}${locked?", locked":s?`, ${s} star${s>1?"s":""}`:isNext?", play next":""}">
-        <div class="n">${locked?ic("lock"):lv}</div>
+        <span class="n">${lv}</span>${locked?`<span class="lk">${ic("lock")}</span>`:""}<span class="thumb">${art(levelPic(LEVELS[lv-1]))}</span>
         <div class="st">${starRow(s)}</div></button>`;
     }
     h+=`</div></section>`;
@@ -144,7 +148,7 @@ function home(focusSel){
 }
 
 // ---------- build cards ----------
-const picFront=(e,sm)=>`<div class="pic${sm?" sm":""}" role="img" aria-label="Picture clue">${e}</div>`;
+const picFront=(e,sm)=>`<div class="pic${sm?" sm":""}" role="img" aria-label="Picture clue">${art(e)}</div>`;
 function buildCards(L){
   if(L.type==="sent")return shuffle(L.items).map(x=>({kind:"choice",prompt:`${picFront(x.e,1)}<div class="sentence">${x.s.replace("___",'<span class="blank" aria-label="blank">?</span>')}</div>`,ask:"Finish the sentence",answer:x.a,opts:shuffle([x.a,...sample(x.o,L.opts-1)]),back:x.e,backWord:x.s.replace("___",x.a)}));
   if(L.type==="opp")return shuffle(L.items).map(x=>({kind:"choice",ask:"What is the opposite?",prompt:`${picFront(x[2],1)}<div class="word">${x[0]}</div>`,answer:x[1],opts:shuffle([x[1],...sample(OPP.filter(o=>o!==x&&!(x[4]||[]).includes(o[1])).map(o=>o[1]),L.opts-1)]),back:x[3],backWord:x[1],sayExtra:`${x[0]} and ${x[1]}`}));
@@ -246,8 +250,8 @@ function finish(){
   G=null;
   $("#app").innerHTML=`<div class="result"><div class="stars" role="img" aria-label="${s} of 3 stars">${starRow(s)}</div>
   <h1 id="done" tabindex="-1">Level ${lv} done!</h1><p>${miss===0?"Perfect, not a single slip!":`You found every answer, with ${miss} slip${miss>1?"s":""} along the way.`}${s<3?" A perfect round earns 3 stars.":""}</p>
-  ${hasNext&&wasNew?`<div class="unlock">${newTier?`${ic(t.icon)}<span>New difficulty unlocked: <b>${t.name}</b><br>${t.skill}</span>`:`${ic("unlock")}<span>Level ${nextLv} is open. It’s a little harder!</span>`}</div>`:""}
-  ${!hasNext?`<div class="unlock">${ic("trophy")}<span>You finished the whole garden!</span></div>`:""}
+  ${hasNext&&wasNew?`<div class="unlock">${newTier?`${art(t.e)}<span>New difficulty unlocked: <b>${t.name}</b><br>${t.skill}</span>`:`${ic("unlock")}<span>Level ${nextLv} is open. It’s a little harder!</span>`}</div>`:""}
+  ${!hasNext?`<div class="unlock">${art("🏆")}<span>You finished the whole garden!</span></div>`:""}
   <div class="row">${s<3?`<button class="k-btn k-btn-outline chunky" id="again">${ic("replay","k-icon sm")}Try for 3 stars</button>`:""}${hasNext?`<button class="k-btn k-btn-primary chunky" id="go">Level ${nextLv}${ic("next","k-icon sm")}</button>`:""}<button class="k-btn k-btn-outline chunky" id="map">${ic("map","k-icon sm")}Map</button></div></div>`;
   const a=$("#again");if(a)a.onclick=()=>start(lv);
   const g=$("#go");if(g)g.onclick=()=>start(nextLv);

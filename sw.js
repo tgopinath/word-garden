@@ -1,7 +1,9 @@
 // Word Garden service worker: network first, cached copy when offline.
-const CACHE = 'word-garden-v2';
+const CACHE = 'word-garden-v3';
 const CORE = ['./', './index.html', './app.css', './app.js', './kolam/tokens.css', './kolam/kolam.css', './manifest.json', './icon.svg', './icon-192.png', './icon-512.png'];
-self.addEventListener('install', e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(CORE)).then(() => self.skipWaiting())); });
+// The card pictures (img/index.json lists them; regenerate it with tools/img-index.mjs) are cached too, so the game works offline.
+const withImages = c => fetch('./img/index.json').then(r => r.json()).then(list => c.addAll(list.map(f => './img/' + f))).catch(() => {});
+self.addEventListener('install', e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(CORE).then(() => withImages(c))).then(() => self.skipWaiting())); });
 self.addEventListener('activate', e => { e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== CACHE).map(k => caches.delete(k)))).then(() => self.clients.claim())); });
 self.addEventListener('fetch', e => {
   const r = e.request;

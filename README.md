@@ -12,6 +12,8 @@ Live: https://word-garden-sable.vercel.app
 - Works with touch, mouse and keyboard (type the letters on spelling cards, Backspace to undo, Esc for the map), and announces right and wrong answers to screen readers.
 - Installable PWA that works offline after the first visit; Android app via a Capacitor shell with native text-to-speech.
 
+Pictures: [Microsoft Fluent Emoji](https://github.com/microsoft/fluentui-emoji) in the 3D style, © Microsoft Corporation, MIT licence, resized to 160 px PNGs in `img/` (named by code point; `tools/img-index.mjs` lists them for offline caching).
+
 Built on the [Kolam design system](https://tgopinath.github.io/kolam-design-system/) (vendored in `kolam/`), with the primary colour set to garden green.
 
 ## Run locally
