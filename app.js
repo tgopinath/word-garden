@@ -105,8 +105,9 @@ let voice=null;
 function pickVoice(){try{const v=speechSynthesis.getVoices();voice=v.find(x=>x.lang==="en-US"&&/samantha|google us/i.test(x.name))||v.find(x=>x.lang==="en-US")||v.find(x=>x.lang.startsWith("en"))||null}catch(e){}}
 if("speechSynthesis" in window){pickVoice();speechSynthesis.onvoiceschanged=pickVoice}
 function say(t){
-  if(NATIVE_TTS){NATIVE_TTS.stop().catch(()=>{}).then(()=>NATIVE_TTS.speak({text:t,lang:"en-US",rate:.85})).catch(()=>{});return}
-  try{const u=new SpeechSynthesisUtterance(t);u.rate=.8;u.lang="en-US";if(voice)u.voice=voice;speechSynthesis.cancel();speechSynthesis.speak(u)}catch(e){}
+  const rate=P.rate||.8; // Settings: Slow 0.65, Normal 0.8, Fast 1.0
+  if(NATIVE_TTS){NATIVE_TTS.stop().catch(()=>{}).then(()=>NATIVE_TTS.speak({text:t,lang:"en-US",rate:rate+.05})).catch(()=>{});return}
+  try{const u=new SpeechSynthesisUtterance(t);u.rate=rate;u.lang="en-US";if(voice)u.voice=voice;speechSynthesis.cancel();speechSynthesis.speak(u)}catch(e){}
 }
 function hush(){try{NATIVE_TTS?NATIVE_TTS.stop().catch(()=>{}):speechSynthesis.cancel()}catch(e){}}
 // ---------- sound effects (Web Audio, no files) ----------
@@ -126,6 +127,18 @@ const KEY="word-garden-v2"; // v2: 40 levels (v1 had 12 with different numbering
 function load(){try{const p=JSON.parse(localStorage.getItem(KEY));return p&&p.stars?p:{stars:{}}}catch(e){return{stars:{}}}}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(P))}catch(e){}}
 let P=load();
+// ---------- personal settings (all kept in P; Start over clears only the stars) ----------
+const esc=t=>String(t??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"})[c]);
+const BUDDIES=[["🐱","Cat"],["🐶","Dog"],["🦊","Fox"],["🐼","Panda"],["🐯","Tiger"],["🦁","Lion"],["🐸","Frog"],["🐨","Koala"],["🦉","Owl"],["🐻","Bear"]];
+const COLORS=[["leaf","Leaf","#2FB36F"],["ocean","Ocean","#3B7FEB"],["berry","Berry","#E8457A"],["sunset","Sunset","#F07A2B"],["grape","Grape","#8B5CF6"]];
+const CHEER_SETS={cheerful:["Great job!","Super!","You got it!","Awesome!","Well done!"],calm:["Well done.","That's right.","Nice work.","Good thinking.","Correct."],silly:["Woohoo!","Banana-tastic!","Super-duper!","Wiggle dance!","Yippee!"]};
+const CHEER_NAMES=[["cheerful","Cheerful"],["calm","Calm"],["silly","Silly"]];
+const RATES=[[.65,"Slow"],[.8,"Normal"],[1,"Fast"]];
+const kidName=()=>(P.name||"").trim();
+const buddy=()=>P.avatar||"🐱";
+const cheerText=i=>{const c=(CHEER_SETS[P.cheer]||CHEER_SETS.cheerful)[i%5], n=kidName();return n?c.replace(/([.!?])$/,`, ${n}$1`):c};
+const applyColor=()=>{document.documentElement.dataset.color=COLORS.some(c=>c[0]===P.color)?P.color:"leaf"};
+applyColor();
 const finished=()=>Object.keys(P.stars).length;
 const unlockedUpTo=()=>{let n=1;while(P.stars[n])n++;return Math.min(n,LEVELS.length)};
 const totalStars=()=>Object.values(P.stars).reduce((a,b)=>a+b,0);
@@ -133,13 +146,42 @@ const tierOf=lv=>Math.floor((lv-1)/PER_STAGE);
 const LOGO='<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'+ICON.seedling+'</svg>';
 
 // ---------- home ----------
-let confirmReset=false;
+let confirmReset=false, VIEW="home";
+// ---------- settings ----------
+function radios(name,label,items,cur,render){ // items: [value, inner html, accessible label]
+  return `<div class="chips" role="radiogroup" aria-label="${label}" data-group="${name}">${items.map(([v,html,al],i)=>{const on=String(v)===String(cur);
+    return `<button type="button" class="chip${html.startsWith("<img")?" pic":""}" role="radio" aria-checked="${on}" tabindex="${on?0:-1}" id="${name}-${i}" data-v="${esc(v)}"${al?` aria-label="${esc(al)}"`:""}>${html}</button>`}).join("")}</div>`;
+}
+function settings(focusSel){
+  VIEW="settings";stopAdvance();G=null;keyHandler=null;
+  const sw=soundOn();
+  $("#app").innerHTML=`<div class="sethead">${homeBtn("quit")}<h1 id="sett" tabindex="-1">Settings</h1></div>
+  <div class="setlist">
+    <section class="setsec"><h2><label for="nm">Your name</label></h2><input class="k-input" id="nm" maxlength="16" autocomplete="off" spellcheck="false" placeholder="Type your name" value="${esc(P.name||"")}"></section>
+    <section class="setsec"><h2 id="h-av">Pick your buddy</h2>${radios("av","Pick your buddy",BUDDIES.map(([e,n])=>[e,art(e),n]),buddy())}</section>
+    <section class="setsec"><h2>Favourite colour</h2>${radios("col","Favourite colour",COLORS.map(([k,n,h])=>[k,`<span class="swatch" style="background:${h}"></span>${n}`]),document.documentElement.dataset.color)}</section>
+    <section class="setsec"><h2>Cheer style</h2>${radios("ch","Cheer style",CHEER_NAMES.map(([k,n])=>[k,n]),CHEER_SETS[P.cheer]?P.cheer:"cheerful")}<p class="preview" id="pv">Your buddy says: <q>${esc(cheerText(0))}</q></p></section>
+    <section class="setsec"><h2>Reading voice</h2>${radios("rt","Reading voice",RATES.map(([r,n])=>[r,n]),P.rate||.8)}</section>
+    <section class="setsec"><h2>Sound effects</h2><button class="k-btn k-btn-outline soundbtn" id="snd" aria-pressed="${sw}">${ic(sw?"speaker":"mute","k-icon sm")}Sound effects ${sw?"on":"off"}</button></section>
+  </div>`;
+  $("#quit").onclick=()=>home("#set");
+  const nm=$("#nm");
+  nm.oninput=()=>{P.name=nm.value.slice(0,16);save();$("#pv q").textContent=cheerText(0)};
+  const pick={av:v=>{P.avatar=v},col:v=>{P.color=v;applyColor()},ch:v=>{P.cheer=v},rt:v=>{P.rate=+v;say(`Hello ${kidName()}`.trim())}};
+  document.querySelectorAll("[data-group]").forEach(g=>{
+    const chips=[...g.querySelectorAll(".chip")], name=g.dataset.group;
+    const choose=i=>{pick[name](chips[i].dataset.v);save();settings(`#${name}-${i}`)};
+    chips.forEach((c,i)=>{c.onclick=()=>choose(i);c.onkeydown=e=>{const d={ArrowRight:1,ArrowDown:1,ArrowLeft:-1,ArrowUp:-1}[e.key];if(d){e.preventDefault();choose((i+d+chips.length)%chips.length)}}});
+  });
+  $("#snd").onclick=()=>{P.sound=!soundOn();save();if(P.sound){unlockAudio();sfx("right")}settings("#snd");announce(P.sound?"Sound effects on":"Sound effects off")};
+  (focusSel&&$(focusSel)||$("#sett")).focus();
+}
 function home(focusSel){
-  stopAdvance();G=null;hush();
+  VIEW="home";stopAdvance();G=null;hush();
   const next=unlockedUpTo(), done=finished(), t=TIERS[tierOf(next)];
   const allDone=done>=LEVELS.length;
-  let h=`<div class="top"><h1 class="brand">${LOGO}Word <span>Garden</span></h1><div class="topr"><div class="pill" role="img" aria-label="${totalStars()} of ${LEVELS.length*3} stars">${oneStar} ${totalStars()} / ${LEVELS.length*3}</div><button class="k-btn k-btn-outline k-btn-sm soundbtn" id="snd" aria-pressed="${soundOn()}">${ic(soundOn()?"speaker":"mute","k-icon sm")}Sound ${soundOn()?"on":"off"}</button></div></div>
-  <p class="hello">${done?`You finished ${done} level${done>1?"s":""}. Your garden is growing!`:"Hi! Let’s grow your first words."}</p>
+  let h=`<div class="top"><h1 class="brand">${LOGO}Word <span>Garden</span></h1><div class="topr"><div class="pill" role="img" aria-label="${totalStars()} of ${LEVELS.length*3} stars">${oneStar} ${totalStars()} / ${LEVELS.length*3}</div><button class="k-btn k-btn-outline setbtn" id="set">${art(buddy())}Settings</button></div></div>
+  <div class="hello"><span class="buddy">${art(buddy())}</span><p><b>Hi${kidName()?" "+esc(kidName()):""}!</b><span class="line">${done?`You finished ${done} level${done>1?"s":""}. Your garden is growing!`:"Let’s grow your first words."}</span></p></div>
   <div class="now"><span class="badge">${art(allDone?"🏆":t.e)}</span><div><small>${allDone?"Every level finished":"Your difficulty now"}</small><b>${allDone?"Word Master!":`${t.name} · Level ${next}`}</b><small>${allDone?"Replay any level to collect more stars":t.skill}</small></div>
   <button class="k-btn k-btn-primary k-btn-lg chunky go" data-play="${allDone?1:next}">${allDone?"Play again":"Play level "+next}${ic("next")}</button></div><div class="home-grid">`;
   TIERS.forEach((tr,ti)=>{
@@ -156,9 +198,9 @@ function home(focusSel){
   <p class="credit">Progress stays on this device. Words are read aloud by the device’s own voice.</p>`;
   $("#app").innerHTML=h;
   document.querySelectorAll("[data-play]").forEach(b=>b.onclick=()=>start(+b.dataset.play));
-  $("#snd").onclick=()=>{P.sound=!soundOn();save();if(P.sound){unlockAudio();sfx("right")}home("#snd");announce(P.sound?"Sound on":"Sound off")};
+  $("#set").onclick=()=>settings();
   const r=$("#reset");if(r)r.onclick=()=>{confirmReset=true;home("#no")};
-  const y=$("#yes");if(y)y.onclick=()=>{P={stars:{},sound:P.sound};save();confirmReset=false;home("#reset");announce("Progress cleared")};
+  const y=$("#yes");if(y)y.onclick=()=>{P={...P,stars:{}};save();confirmReset=false;home("#reset");announce("Progress cleared")};
   const n=$("#no");if(n)n.onclick=()=>{confirmReset=false;home("#reset")};
   if(focusSel&&$(focusSel))$(focusSel).focus();
 }
@@ -180,7 +222,7 @@ function buildCards(L){
 
 // ---------- play ----------
 let G=null;
-function start(lv){confirmReset=false;const L=LEVELS[lv-1];G={lv,L,cards:buildCards(L),i:0,miss:0};renderCard()}
+function start(lv){VIEW="play";confirmReset=false;const L=LEVELS[lv-1];G={lv,L,cards:buildCards(L),i:0,miss:0};renderCard()}
 function header(){
   const pct=G.i/G.cards.length*100, t=TIERS[tierOf(G.lv)], L=G.L;
   const diff=L.type==="spell"?`${L.extra?L.extra+" decoy letter"+(L.extra>1?"s":""):"No decoys"}`:L.opts?`${L.opts} choices`:"";
@@ -191,7 +233,6 @@ let keyHandler=null, advance=null;
 const WAIT=2000; // after a right answer, move on by itself after 2 s (Next skips the wait)
 function stopAdvance(){if(advance){clearTimeout(advance);advance=null}}
 function goNext(){stopAdvance();if(!G)return;G.i++;G.i<G.cards.length?renderCard():finish()}
-const CHEERS=["Great job!","Super!","You got it!","Awesome!","Well done!"];
 function renderCard(){
   stopAdvance();
   const c=G.cards[G.i], last=G.i===G.cards.length-1;
@@ -213,7 +254,7 @@ function renderCard(){
   const right=el=>{
     if(solved)return;solved=true;keyHandler=null;
     card.classList.remove("shake");card.classList.add("solved");
-    $("#ask").textContent=CHEERS[G.i%5];
+    $("#ask").textContent=cheerText(G.i);
     // Show the completed answer where the question was.
     const blank=card.querySelector(".blank");
     if(blank){blank.textContent=c.answer;blank.classList.add("filled");blank.removeAttribute("aria-label");const w=blank.closest(".word");if(w)w.setAttribute("aria-label",c.backWord)}
@@ -257,7 +298,7 @@ function renderCard(){
   }
   $("#ask").focus({preventScroll:true});
 }
-addEventListener("keydown",e=>{if(e.key==="Escape"&&G){home();return}if(keyHandler&&G)keyHandler(e)});
+addEventListener("keydown",e=>{if(e.key==="Escape"&&(G||VIEW==="settings")){home(VIEW==="settings"?"#set":undefined);return}if(keyHandler&&G)keyHandler(e)});
 function finish(){
   stopAdvance();keyHandler=null;
   const s=G.miss===0?3:G.miss<=2?2:1, lv=G.lv, wasNew=!P.stars[lv];

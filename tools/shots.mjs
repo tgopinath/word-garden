@@ -11,7 +11,8 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
 
 // A child part-way through the garden: Seedling done, two Sprout levels done, Sprout level 13 up next.
 const stars = n => ({ stars: Object.fromEntries(Array.from({ length: n }, (_, i) => [i + 1, [3, 3, 2, 3, 2, 3, 3, 1, 3, 3][i % 10]])) });
-const seed = stars(12), later = stars(30);
+const me = { name: 'Asha', avatar: '🦊', cheer: 'cheerful', sound: true };
+const seed = { ...stars(12), ...me }, later = { ...stars(30), ...me };
 
 fs.mkdirSync(SHOTS, { recursive: true });
 const tmp = fs.mkdtempSync(path.join(ROOT, '.shots-'));
@@ -53,7 +54,9 @@ try {
   await grab('spell', { state: later, js: `${wait} start(30); await wait(200); const c=G.cards[0]; const t=[...document.querySelectorAll('.tile')]; for (const ch of c.answer.slice(0,2)) t[c.tiles.findIndex((x,j)=>x===ch&&!t[j].disabled)].click(); document.activeElement.blur();` });
   // Big Tree: a sentence card answered; the answer shows on the same card (auto-advance stopped for the shot).
   await grab('answer', { state: later, js: `${wait} start(32); await wait(200); const c=G.cards[0]; [...document.querySelectorAll('.opt')].find(b=>b.dataset.o===c.answer).click(); stopAdvance(); document.querySelector('#next').classList.remove('counting'); await wait(300); document.activeElement.blur();` });
-  await grab('dark', { dark: true, state: later });
+  await grab('dark', { dark: true, state: { ...later, color: 'grape' } });
+  // Settings: name, buddy, colour, cheer style, reading voice and sound effects.
+  await grab('settings', { js: `settings(); document.activeElement.blur();` });
   await send('Emulation.setDeviceMetricsOverride', { width: 1440, height: 900, deviceScaleFactor: 1, mobile: false });
   await grab('web', { width: 1440 });
   console.log('captured', fs.readdirSync(SHOTS).join(', '));

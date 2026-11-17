@@ -21,10 +21,12 @@ Children aged about 4 to 7 who are starting to read English need lots of short, 
    - Big Tree L31–40: 20 sentences, 15 opposites, 15 rhymes.
    - No word is a question in two levels.
 3. **Level result:** 1–3 stars from the number of slips, what unlocked, try again for 3 stars.
+4. **Settings:** the child's name, buddy picture, favourite colour, cheer style (Cheerful, Calm, Silly), reading voice speed and sound effects.
 
 ## Data
 - Hand-written word bank (161 picture words, 20 sentences, 15 opposites, 15 rhymes). Pictures are Microsoft Fluent Emoji 3D PNGs (MIT), bundled in img/.
-- Sound effects: a chime for right and a soft "uh-oh" for wrong, generated with Web Audio; Sound on/off toggle on the home screen.
+- Sound effects: a chime for right and a soft "uh-oh" for wrong, generated with Web Audio.
+- Settings (screen 4): name, buddy, favourite colour, cheer style, reading voice speed and sound effects, saved on the device; Start over keeps them.
 - Speech: the device's own text-to-speech (Web Speech API; native TTS plugin in the Android shell).
 - Progress: localStorage only, no account.
 
@@ -34,4 +36,4 @@ Children aged about 4 to 7 who are starting to read English need lots of short, 
 - Works offline after the first visit, at 375 px and on desktop, in light and dark.
 
 ## Out of scope (v1)
-Multiple child profiles, a parent report, Tamil, recorded human audio, spaced repetition, more words per level.
+Multiple child profiles (one set of settings per device), a parent report, Tamil, recorded human audio, spaced repetition, more words per level.
