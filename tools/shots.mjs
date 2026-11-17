@@ -9,9 +9,9 @@ const SHOTS = path.join(ROOT, 'prototype', 'shots');
 const CHROME = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
-// A child part-way through the garden: Seedling done, two Sprout levels done, Sprout level 6 up next.
-const seed = { stars: { 1: 3, 2: 3, 3: 2, 4: 3, 5: 2 } };
-const later = { stars: { 1: 3, 2: 3, 3: 2, 4: 3, 5: 2, 6: 3, 7: 3, 8: 2, 9: 3 } };
+// A child part-way through the garden: Seedling done, two Sprout levels done, Sprout level 13 up next.
+const stars = n => ({ stars: Object.fromEntries(Array.from({ length: n }, (_, i) => [i + 1, [3, 3, 2, 3, 2, 3, 3, 1, 3, 3][i % 10]])) });
+const seed = stars(12), later = stars(30);
 
 fs.mkdirSync(SHOTS, { recursive: true });
 const tmp = fs.mkdtempSync(path.join(ROOT, '.shots-'));
@@ -36,7 +36,7 @@ try {
   const grab = async (file, { state = seed, js, width = 600, dark = false } = {}) => {
     await send('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-color-scheme', value: dark ? 'dark' : 'light' }, { name: 'prefers-reduced-motion', value: 'reduce' }] });
     await send('Page.navigate', { url: `${origin}/index.html` }); await sleep(1000);
-    await send('Runtime.evaluate', { expression: `localStorage.clear(); localStorage.setItem('word-garden-v1', ${JSON.stringify(JSON.stringify(state))})` });
+    await send('Runtime.evaluate', { expression: `localStorage.clear(); localStorage.setItem('word-garden-v2', ${JSON.stringify(JSON.stringify(state))})` });
     await send('Page.navigate', { url: `${origin}/index.html?shot=${file}` }); await sleep(2200);
     if (js) { await send('Runtime.evaluate', { expression: `speechSynthesis.speak=()=>{};(async()=>{${js}})()`, awaitPromise: true }); await sleep(1500); }
     const s = await send('Page.captureScreenshot', { format: 'png' });
@@ -48,11 +48,11 @@ try {
   await phone();
   await grab('home');
   // Sprout: one wrong letter crossed out.
-  await grab('missing', { js: `${wait} start(6); await wait(200); const c=G.cards[G.i]; [...document.querySelectorAll('.opt')].find(b=>b.dataset.o!==c.answer).click(); await wait(500); document.querySelector('#front').classList.remove('shake'); document.activeElement.blur();` });
+  await grab('missing', { js: `${wait} start(18); await wait(200); const c=G.cards[G.i]; [...document.querySelectorAll('.opt')].find(b=>b.dataset.o!==c.answer).click(); await wait(500); document.querySelector('#card').classList.remove('shake'); document.activeElement.blur();` });
   // Sunflower: two letters placed, decoys still in the tray.
-  await grab('spell', { state: later, js: `${wait} for(let i=0;i<5;i++)Math.random(); start(9); await wait(200); const c=G.cards[0]; const t=[...document.querySelectorAll('.tile')]; for (const ch of c.answer.slice(0,2)) t[c.tiles.findIndex((x,j)=>x===ch&&!t[j].disabled)].click(); document.activeElement.blur();` });
-  // Big Tree: a sentence card answered and flipped.
-  await grab('flip', { state: later, js: `${wait} start(10); await wait(200); const c=G.cards[0]; [...document.querySelectorAll('.opt')].find(b=>b.dataset.o===c.answer).click(); await wait(900); document.activeElement.blur();` });
+  await grab('spell', { state: later, js: `${wait} start(30); await wait(200); const c=G.cards[0]; const t=[...document.querySelectorAll('.tile')]; for (const ch of c.answer.slice(0,2)) t[c.tiles.findIndex((x,j)=>x===ch&&!t[j].disabled)].click(); document.activeElement.blur();` });
+  // Big Tree: a sentence card answered; the answer shows on the same card (auto-advance stopped for the shot).
+  await grab('answer', { state: later, js: `${wait} start(32); await wait(200); const c=G.cards[0]; [...document.querySelectorAll('.opt')].find(b=>b.dataset.o===c.answer).click(); stopAdvance(); document.querySelector('#next').classList.remove('counting'); await wait(300); document.activeElement.blur();` });
   await grab('dark', { dark: true, state: later });
   await send('Emulation.setDeviceMetricsOverride', { width: 1440, height: 900, deviceScaleFactor: 1, mobile: false });
   await grab('web', { width: 1440 });

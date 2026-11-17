@@ -13,16 +13,17 @@ Children aged about 4 to 7 who are starting to read English need lots of short, 
 - "Let me try again without feeling punished."
 
 ## v1 screens
-1. **Garden map (home):** the current difficulty and a Play button, then 12 levels in 4 stages (Seedling, Sprout, Sunflower, Big Tree) with stars and locks.
-2. **Card play:** one question per card. Right answer: the card flips to the picture, the word in a reading font and Hear it. Wrong answer: the card shakes and the choice is crossed out.
-   - Seedling L1–3: match a picture to its word (2, 3, then 4 choices).
-   - Sprout L4–6: pick the missing letter.
-   - Sunflower L7–9: spell the word with letter tiles (0, 1, then 2 decoy letters).
-   - Big Tree L10–12: finish the sentence, opposites, rhymes.
+1. **Garden map (home):** the current difficulty and a Play button, then 40 levels in 4 stages of 10 (Seedling, Sprout, Sunflower, Big Tree) with stars and locks.
+2. **Card play:** one card per question, 5 per level. Right answer: on the same card the choice turns green, the completed word or sentence appears, it is read aloud, and the next card follows after 4 s. Wrong answer: the card shakes and the choice is crossed out.
+   - Seedling L1–10: match a picture to its word (2 → 4 choices, same-length wrong choices).
+   - Sprout L11–20: pick the missing letter (2 → 4 choices).
+   - Sunflower L21–30: spell the word with letter tiles (0 → 3 decoy letters).
+   - Big Tree L31–40: 20 sentences, 15 opposites, 15 rhymes.
+   - No word is a question in two levels.
 3. **Level result:** 1–3 stars from the number of slips, what unlocked, try again for 3 stars.
 
 ## Data
-- Hand-written word bank (46 picture words, 8 sentences, 8 opposites, 8 rhymes). Pictures are system emoji, so no image hosting or licensing.
+- Hand-written word bank (164 picture words, 20 sentences, 15 opposites, 15 rhymes). Pictures are system emoji, so no image hosting or licensing.
 - Speech: the device's own text-to-speech (Web Speech API; native TTS plugin in the Android shell).
 - Progress: localStorage only, no account.
 

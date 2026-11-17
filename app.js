@@ -3,9 +3,10 @@
 // Kolam UI, line icons, accessibility, native text-to-speech in the Android app and a few bug fixes.
 
 // ---------- word bank (pictures are emoji so every word has a clear, consistent picture) ----------
-const W3=[["cat","🐱"],["dog","🐶"],["sun","☀️"],["bus","🚌"],["hat","🎩"],["pig","🐷"],["cup","☕"],["bed","🛏️"],["egg","🥚"],["fox","🦊"],["ant","🐜"],["bee","🐝"],["owl","🦉"],["cow","🐮"],["key","🔑"],["box","📦"],["car","🚗"],["map","🗺️"]];
-const W4=[["fish","🐟"],["frog","🐸"],["duck","🦆"],["cake","🍰"],["star","⭐"],["moon","🌙"],["tree","🌳"],["ship","🚢"],["lion","🦁"],["bear","🐻"],["milk","🥛"],["ball","⚽"],["boat","⛵"],["kite","🪁"],["rain","🌧️"],["book","📖"]];
-const W5=[["apple","🍎"],["house","🏠"],["horse","🐴"],["grape","🍇"],["train","🚆"],["snake","🐍"],["tiger","🐯"],["zebra","🦓"],["clock","⏰"],["bread","🍞"],["chair","🪑"],["whale","🐳"]];
+const W3=[["cat","🐱"],["dog","🐶"],["sun","☀️"],["bus","🚌"],["hat","🎩"],["pig","🐷"],["cup","☕"],["bed","🛏️"],["egg","🥚"],["fox","🦊"],["ant","🐜"],["bee","🐝"],["owl","🦉"],["cow","🐮"],["key","🔑"],["box","📦"],["car","🚗"],["map","🗺️"],["bat","🦇"],["cap","🧢"],["web","🕸️"],["nut","🥜"],["pan","🍳"],["pen","🖊️"],["gem","💎"],["van","🚐"],["axe","🪓"],["ear","👂"],["hen","🐔"],["log","🪵"],["bag","👜"],["bow","🎀"],["leg","🦵"],["eye","👁️"],["ram","🐏"],["rat","🐀"],["pie","🥧"],["tea","🍵"],["ice","🧊"],["bug","🐛"],["saw","🪚"],["tie","👔"]];
+const W4=[["fish","🐟"],["frog","🐸"],["duck","🦆"],["cake","🍰"],["star","⭐"],["moon","🌙"],["tree","🌳"],["ship","🚢"],["lion","🦁"],["bear","🐻"],["milk","🥛"],["ball","⚽"],["boat","⛵"],["kite","🪁"],["rain","🌧️"],["book","📖"],["drum","🥁"],["sock","🧦"],["corn","🌽"],["bell","🔔"],["bone","🦴"],["crab","🦀"],["deer","🦌"],["gift","🎁"],["goat","🐐"],["rose","🌹"],["seal","🦭"],["tent","⛺"],["wolf","🐺"],["bird","🐦"],["door","🚪"],["shoe","👟"],["hand","✋"],["foot","🦶"],["nose","👃"],["king","🤴"],["ring","💍"],["leaf","🍃"],["bike","🚲"],["lock","🔒"],["taxi","🚕"],["pear","🍐"],["kiwi","🥝"],["rice","🍚"],["coat","🧥"],["hook","🪝"],["snow","❄️"],["fire","🔥"],["wave","🌊"],["rock","🪨"],["sled","🛷"],["bowl","🥣"],["cart","🛒"],["worm","🪱"],["dice","🎲"],["flag","🚩"],["sofa","🛋️"],["swan","🦢"],["bull","🐂"],["palm","🌴"],["bulb","💡"],["vest","🦺"],["soup","🍲"]];
+const W5=[["apple","🍎"],["house","🏠"],["horse","🐴"],["grape","🍇"],["train","🚆"],["snake","🐍"],["tiger","🐯"],["zebra","🦓"],["clock","⏰"],["bread","🍞"],["chair","🪑"],["whale","🐳"],["pizza","🍕"],["robot","🤖"],["camel","🐫"],["crown","👑"],["ghost","👻"],["koala","🐨"],["lemon","🍋"],["panda","🐼"],["piano","🎹"],["shark","🦈"],["snail","🐌"],["tulip","🌷"],["sheep","🐑"],["mouse","🐭"],["juice","🧃"],["heart","❤️"],["cloud","☁️"],["plane","✈️"],["truck","🚚"],["shell","🐚"],["skunk","🦨"],["sloth","🦥"],["otter","🦦"],["eagle","🦅"],["llama","🦙"],["bison","🦬"],["mango","🥭"],["melon","🍈"],["peach","🍑"],["onion","🧅"],["candy","🍬"],["chick","🐤"],["dress","👗"],["shirt","👕"],["glove","🧤"],["boots","👢"],["pants","👖"],["broom","🧹"],["spoon","🥄"],["knife","🔪"],["tooth","🦷"],["watch","⌚"],["phone","📱"],["bunny","🐰"],["globe","🌍"],["beach","🏖️"],["queen","👸"]];
+const BY_LEN={3:W3,4:W4,5:W5};
 const SENT=[
  {s:"The sun is ___.",a:"hot",o:["cold","wet","sad"],e:"☀️"},
  {s:"A fish can ___.",a:"swim",o:["fly","read","sing"],e:"🐟"},
@@ -14,9 +15,26 @@ const SENT=[
  {s:"I sleep in a ___.",a:"bed",o:["cup","car","shoe"],e:"🛏️"},
  {s:"Snow is ___.",a:"cold",o:["hot","loud","sweet"],e:"❄️"},
  {s:"A cow says ___.",a:"moo",o:["woof","meow","quack"],e:"🐮"},
- {s:"I read a ___.",a:"book",o:["shoe","cake","fish"],e:"📖"}];
-const OPP=[["big","small","🐘","🐭"],["hot","cold","🔥","🧊"],["up","down","⬆️","⬇️"],["happy","sad","😀","😢"],["fast","slow","🐇","🐢"],["day","night","☀️","🌙"],["wet","dry","💧","🏜️"],["full","empty","🍪","🫙"]];
-const RHY=[["cat","hat","🐱","🎩"],["bee","tree","🐝","🌳"],["cake","lake","🍰","🏞️"],["moon","spoon","🌙","🥄"],["star","car","⭐","🚗"],["fox","box","🦊","📦"],["king","ring","🤴","💍"],["bug","mug","🐞","☕"]];
+ {s:"I read a ___.",a:"book",o:["shoe","cake","fish"],e:"📖"},
+ {s:"A dog says ___.",a:"woof",o:["moo","quack","baa"],e:"🐶"},
+ {s:"I brush my ___.",a:"teeth",o:["shoes","cake","bus"],e:"🪥"},
+ {s:"Bananas are ___.",a:"yellow",o:["blue","black","pink"],e:"🍌"},
+ {s:"The grass is ___.",a:"green",o:["red","purple","orange"],e:"🌱"},
+ {s:"A duck says ___.",a:"quack",o:["moo","woof","oink"],e:"🦆"},
+ {s:"I wear a ___ on my head.",a:"hat",o:["sock","shoe","glove"],e:"🎩"},
+ {s:"We see with our ___.",a:"eyes",o:["ears","feet","hands"],e:"👀"},
+ {s:"A frog can ___.",a:"jump",o:["read","cook","drive"],e:"🐸"},
+ {s:"Ice cream is ___.",a:"sweet",o:["loud","sad","tall"],e:"🍦"},
+ {s:"At night I see the ___.",a:"moon",o:["sun","rainbow","bus"],e:"🌙"},
+ {s:"A bee makes ___.",a:"honey",o:["milk","bread","juice"],e:"🐝"},
+ {s:"I eat soup with a ___.",a:"spoon",o:["shoe","hat","ball"],e:"🥣"}];
+// [word, opposite, picture, picture of the opposite, words that must not be offered as wrong choices]
+const OPP=[["big","small","🐘","🐭",["short"]],["hot","cold","🔥","🧊"],["up","down","⬆️","⬇️"],["happy","sad","😀","😢"],["fast","slow","🐇","🐢"],
+ ["day","night","☀️","🌙"],["wet","dry","💧","🏜️"],["tall","short","🦒","🐁",["small"]],["old","young","👴","👶"],["loud","quiet","📢","🤫",["soft"]],
+ ["hard","soft","🪨","🧸",["quiet"]],["left","right","⬅️","➡️"],["sweet","sour","🍭","🍋"],["awake","asleep","😃","😴"],["black","white","⬛","⬜"]];
+const RHY=[["cat","hat","🐱","🎩"],["bee","tree","🐝","🌳"],["cake","lake","🍰","🏞️"],["moon","spoon","🌙","🥄"],["star","car","⭐","🚗"],
+ ["fox","box","🦊","📦"],["king","ring","🤴","💍"],["bug","mug","🐞","☕"],["frog","log","🐸","🪵"],["goat","boat","🐐","⛵"],
+ ["mouse","house","🐭","🏠"],["bear","chair","🐻","🪑"],["sock","clock","🧦","⏰"],["bell","shell","🔔","🐚"],["fish","dish","🐟","🍽️"]];
 
 // ---------- line icons (Kolam style: 24px grid, 2px stroke) ----------
 const ICON={
@@ -44,20 +62,30 @@ const TIERS=[
  {name:"Sprout",icon:"sprout",skill:"Find the missing letter"},
  {name:"Sunflower",icon:"sunflower",skill:"Spell the whole word"},
  {name:"Big Tree",icon:"tree",skill:"Sentences, opposites and rhymes"}];
-// Each level is harder than the last: more cards, more choices, longer words, extra decoy tiles.
-const LEVELS=[
- {type:"pick",pool:W3,count:5,opts:2},
- {type:"pick",pool:W3,count:6,opts:3},
- {type:"pick",pool:W4,count:6,opts:4},
- {type:"miss",pool:W3,count:6,opts:3},
- {type:"miss",pool:W4,count:6,opts:4},
- {type:"miss",pool:W5,count:7,opts:4},
- {type:"spell",pool:W3,count:5,extra:0},
- {type:"spell",pool:W4,count:6,extra:1},
- {type:"spell",pool:W5,count:6,extra:2},
- {type:"sent",count:6,opts:3},
- {type:"opp",count:6,opts:4},
- {type:"rhy",count:7,opts:4}];
+// 4 stages × 10 levels, 5 cards each. Difficulty rises inside every stage.
+const PER_STAGE=10, PER_LEVEL=5;
+const CHOICES=[2,2,3,3,3,3,4,4,4,4], DECOYS=[0,0,0,1,1,1,2,2,2,3], BIG_CHOICES=[3,3,3,3,4,4,4,4,4,4];
+// Deal each length group round-robin into the three word stages, so every stage runs from short to long words
+// and each level asks its own fixed words: no word is a question in two levels.
+const STAGE_WORDS=[[],[],[]];
+[W3,W4,W5].forEach(g=>g.forEach((w,i)=>STAGE_WORDS[i%3].push(w)));
+const LEVELS=[];
+["pick","miss","spell"].forEach((type,s)=>{for(let k=0;k<PER_STAGE;k++)LEVELS.push({type,words:STAGE_WORDS[s].slice(k*PER_LEVEL,(k+1)*PER_LEVEL),count:PER_LEVEL,opts:CHOICES[k],extra:DECOYS[k]})});
+// Big Tree: 20 sentences, then 15 opposites, then 15 rhymes, 5 per level.
+const BIG=[...SENT.map(x=>["sent",x]),...OPP.map(x=>["opp",x]),...RHY.map(x=>["rhy",x])];
+for(let k=0;k<PER_STAGE;k++){const it=BIG.slice(k*PER_LEVEL,(k+1)*PER_LEVEL);LEVELS.push({type:it[0][0],items:it.map(x=>x[1]),count:PER_LEVEL,opts:BIG_CHOICES[k]})}
+// Dev-time check (localhost only): every level is full, of one card type, and no question is asked in two levels.
+function checkLevels(){
+  const seen=new Map(), problems=[];
+  LEVELS.forEach((L,i)=>{
+    const qs=L.words?L.words.map(w=>"word:"+w[0]):L.items.map(x=>L.type+":"+(L.type==="sent"?x.s:x[0]));
+    if(qs.length!==L.count)problems.push(`level ${i+1} has ${qs.length} of ${L.count} cards`);
+    if(L.items&&!L.items.every(x=>BIG.find(b=>b[1]===x)[0]===L.type))problems.push(`level ${i+1} mixes card types`);
+    qs.forEach(q=>{if(seen.has(q))problems.push(`${q} is asked in level ${seen.get(q)} and level ${i+1}`);seen.set(q,i+1)});
+  });
+  return problems;
+}
+if(/^(localhost|127\.0\.0\.1)$/.test(location.hostname)){const p=checkLevels();if(p.length)console.error("Word Garden levels:",p)}
 const ALPHA="abcdefghijklmnoprstuwy";
 
 // ---------- helpers ----------
@@ -75,20 +103,20 @@ function say(t){
 }
 function hush(){try{NATIVE_TTS?NATIVE_TTS.stop().catch(()=>{}):speechSynthesis.cancel()}catch(e){}}
 const announce=t=>{const n=$("#say");n.textContent="";setTimeout(()=>n.textContent=t,30)};
-const KEY="word-garden-v1";
+const KEY="word-garden-v2"; // v2: 40 levels (v1 had 12 with different numbering)
 function load(){try{const p=JSON.parse(localStorage.getItem(KEY));return p&&p.stars?p:{stars:{}}}catch(e){return{stars:{}}}}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(P))}catch(e){}}
 let P=load();
 const finished=()=>Object.keys(P.stars).length;
 const unlockedUpTo=()=>{let n=1;while(P.stars[n])n++;return Math.min(n,LEVELS.length)};
 const totalStars=()=>Object.values(P.stars).reduce((a,b)=>a+b,0);
-const tierOf=lv=>Math.floor((lv-1)/3);
+const tierOf=lv=>Math.floor((lv-1)/PER_STAGE);
 const LOGO='<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'+ICON.seedling+'</svg>';
 
 // ---------- home ----------
 let confirmReset=false;
 function home(focusSel){
-  G=null;hush();
+  stopAdvance();G=null;hush();
   const next=unlockedUpTo(), done=finished(), t=TIERS[tierOf(next)];
   const allDone=done>=LEVELS.length;
   let h=`<div class="top"><h1 class="brand">${LOGO}Word <span>Garden</span></h1><div class="pill" role="img" aria-label="${totalStars()} of ${LEVELS.length*3} stars">${oneStar} ${totalStars()} / ${LEVELS.length*3}</div></div>
@@ -97,10 +125,10 @@ function home(focusSel){
   <button class="k-btn k-btn-primary k-btn-lg chunky go" data-play="${allDone?1:next}">${allDone?"Play again":"Play level "+next}${ic("next")}</button></div><div class="home-grid">`;
   TIERS.forEach((tr,ti)=>{
     h+=`<section class="tier" aria-labelledby="tier${ti}"><h2 id="tier${ti}"><span class="ti">${ic(tr.icon)}</span>${tr.name} <em>${tr.skill}</em></h2><div class="levels">`;
-    for(let k=1;k<=3;k++){
-      const lv=ti*3+k, s=P.stars[lv]||0, locked=lv>next, isNext=lv===next&&!P.stars[lv];
+    for(let k=1;k<=PER_STAGE;k++){
+      const lv=ti*PER_STAGE+k, s=P.stars[lv]||0, locked=lv>next, isNext=lv===next&&!P.stars[lv];
       h+=`<button class="lv${isNext?" next":""}" data-play="${lv}" ${locked?"disabled":""} aria-label="Level ${lv}${locked?", locked":s?`, ${s} star${s>1?"s":""}`:isNext?", play next":""}">
-        <div class="lbl">Level</div><div class="n">${locked?ic("lock"):lv}</div>
+        <div class="n">${locked?ic("lock"):lv}</div>
         <div class="st">${starRow(s)}</div></button>`;
     }
     h+=`</div></section>`;
@@ -118,11 +146,12 @@ function home(focusSel){
 // ---------- build cards ----------
 const picFront=(e,sm)=>`<div class="pic${sm?" sm":""}" role="img" aria-label="Picture clue">${e}</div>`;
 function buildCards(L){
-  if(L.type==="sent")return sample(SENT,L.count).map(x=>({kind:"choice",prompt:`${picFront(x.e,1)}<div class="sentence">${x.s.replace("___",'<span class="blank" aria-label="blank">?</span>')}</div>`,ask:"Finish the sentence",answer:x.a,opts:shuffle([x.a,...sample(x.o,L.opts-1)]),back:x.e,backWord:x.s.replace("___",x.a)}));
-  if(L.type==="opp")return sample(OPP,L.count).map(x=>({kind:"choice",ask:"What is the opposite?",prompt:`${picFront(x[2],1)}<div class="word">${x[0]}</div>`,answer:x[1],opts:shuffle([x[1],...sample(OPP.filter(o=>o!==x).map(o=>o[1]),L.opts-1)]),back:x[3],backWord:x[1],sayExtra:`${x[0]} and ${x[1]}`}));
-  if(L.type==="rhy")return sample(RHY,L.count).map(x=>({kind:"choice",ask:"Which word rhymes?",prompt:`${picFront(x[2],1)}<div class="word">${x[0]}</div>`,answer:x[1],opts:shuffle([x[1],...sample(RHY.filter(o=>o!==x).map(o=>o[1]),L.opts-1)]),back:x[3],backWord:x[1],sayExtra:`${x[0]}, ${x[1]}`}));
-  return sample(L.pool,L.count).map(([w,e])=>{
-    if(L.type==="pick")return{kind:"choice",ask:"Which word is this?",prompt:picFront(e),answer:w,opts:shuffle([w,...sample(L.pool.filter(p=>p[0]!==w).map(p=>p[0]),L.opts-1)]),back:e,backWord:w};
+  if(L.type==="sent")return shuffle(L.items).map(x=>({kind:"choice",prompt:`${picFront(x.e,1)}<div class="sentence">${x.s.replace("___",'<span class="blank" aria-label="blank">?</span>')}</div>`,ask:"Finish the sentence",answer:x.a,opts:shuffle([x.a,...sample(x.o,L.opts-1)]),back:x.e,backWord:x.s.replace("___",x.a)}));
+  if(L.type==="opp")return shuffle(L.items).map(x=>({kind:"choice",ask:"What is the opposite?",prompt:`${picFront(x[2],1)}<div class="word">${x[0]}</div>`,answer:x[1],opts:shuffle([x[1],...sample(OPP.filter(o=>o!==x&&!(x[4]||[]).includes(o[1])).map(o=>o[1]),L.opts-1)]),back:x[3],backWord:x[1],sayExtra:`${x[0]} and ${x[1]}`}));
+  if(L.type==="rhy")return shuffle(L.items).map(x=>({kind:"choice",ask:"Which word rhymes?",prompt:`${picFront(x[2],1)}<div class="word">${x[0]}</div>`,answer:x[1],opts:shuffle([x[1],...sample(RHY.filter(o=>o!==x).map(o=>o[1]),L.opts-1)]),back:x[3],backWord:x[1],sayExtra:`${x[0]}, ${x[1]}`}));
+  return shuffle(L.words).map(([w,e])=>{
+    // Wrong picture choices come from words of the same length, which makes them harder to rule out.
+    if(L.type==="pick")return{kind:"choice",ask:"Which word is this?",prompt:picFront(e),answer:w,opts:shuffle([w,...sample(BY_LEN[w.length].filter(p=>p[0]!==w).map(p=>p[0]),L.opts-1)]),back:e,backWord:w};
     if(L.type==="miss"){const i=Math.floor(Math.random()*w.length),c=w[i];
       return{kind:"choice",letter:true,ask:"Which letter is missing?",prompt:`${picFront(e)}<div class="word" aria-label="${w.slice(0,i).split("").join(" ")} blank ${w.slice(i+1).split("").join(" ")}">${w.slice(0,i)}<span class="blank">_</span>${w.slice(i+1)}</div>`,answer:c,opts:shuffle([c,...sample([...ALPHA].filter(a=>a!==c),L.opts-1)]),back:e,backWord:w}}
     return{kind:"spell",ask:"Spell the word",prompt:picFront(e),answer:w,tiles:shuffle([...w,...sample([...ALPHA].filter(a=>!w.includes(a)),L.extra)]),back:e,backWord:w};
@@ -138,31 +167,48 @@ function header(){
   return `<div class="bar"><button class="k-btn k-btn-outline quit" id="quit" aria-label="Back to the map">${ic("back")}</button><div class="k-progress-track" role="progressbar" aria-label="Cards done" aria-valuemin="0" aria-valuemax="${G.cards.length}" aria-valuenow="${G.i}"><div class="k-progress-fill" style="width:${pct}%"></div></div><div class="count" aria-label="Card ${G.i+1} of ${G.cards.length}">${G.i+1}/${G.cards.length}</div></div>
   <div class="meta"><span class="k-badge k-badge-pill k-badge-primary">Level ${G.lv}</span><span class="k-badge k-badge-pill">${ic(t.icon,"k-icon")} ${t.name}</span><span class="k-badge k-badge-pill">${G.cards.length} cards</span>${diff?`<span class="k-badge k-badge-pill">${diff}</span>`:""}</div>`;
 }
-let keyHandler=null;
+let keyHandler=null, advance=null;
+const WAIT=4000; // after a right answer, move on by itself after 4 s (Next skips the wait)
+function stopAdvance(){if(advance){clearTimeout(advance);advance=null}}
+function goNext(){stopAdvance();if(!G)return;G.i++;G.i<G.cards.length?renderCard():finish()}
+const CHEERS=["Great job!","Super!","You got it!","Awesome!","Well done!"];
 function renderCard(){
+  stopAdvance();
   const c=G.cards[G.i], last=G.i===G.cards.length-1;
-  let front=`<h1 class="ask" id="ask" tabindex="-1">${c.ask}</h1>${c.prompt}`;
+  let body=`<h1 class="ask" id="ask" tabindex="-1">${c.ask}</h1>${c.prompt}`;
   if(c.kind==="choice"){
-    front+=`<div class="opts${c.opts.length===3?" n3":""}" role="group" aria-labelledby="ask">${c.opts.map(o=>`<button class="opt${c.letter?" letter":""}" data-o="${o}">${o}</button>`).join("")}</div>`;
+    body+=`<div class="opts${c.opts.length===3?" n3":""}" role="group" aria-labelledby="ask">${c.opts.map(o=>`<button class="opt${c.letter?" letter":""}" data-o="${o}">${o}</button>`).join("")}</div>`;
   }else{
-    front+=`<div class="slots" id="slots" role="status" aria-label="Your word so far">${[...c.answer].map(()=>`<div class="slot"></div>`).join("")}</div>
-    <div class="tiles" role="group" aria-label="Letter tiles">${c.tiles.map((t,i)=>`<button class="tile" data-t="${i}">${t}</button>`).join("")}</div><button class="k-btn k-btn-ghost k-btn-sm undo" id="undo">${ic("undo","k-icon sm")}Undo</button>`;
+    body+=`<div class="slots" id="slots" role="status" aria-label="Your word so far">${[...c.answer].map(()=>`<div class="slot"></div>`).join("")}</div>
+    <div class="tiles" id="tiles" role="group" aria-label="Letter tiles">${c.tiles.map((t,i)=>`<button class="tile" data-t="${i}">${t}</button>`).join("")}</div><button class="k-btn k-btn-ghost k-btn-sm undo" id="undo">${ic("undo","k-icon sm")}Undo</button>`;
   }
-  $("#app").innerHTML=header()+`<div class="deck${last?" last":""}"><div class="card" id="card"><div class="flip">
-    <div class="face front" id="front">${front}</div>
-    <div class="face reveal" id="reveal" inert><p class="cheer">${["Great job!","Super!","You got it!","Awesome!","Well done!"][G.i%5]}</p><div class="pic" aria-hidden="true">${c.back}</div><div class="word">${c.backWord}</div>
-    <button class="k-btn k-btn-secondary hear" id="hear">${ic("speaker","k-icon sm")}Hear it</button><button class="k-btn k-btn-primary k-btn-lg chunky" id="next">${last?"Finish level":"Next card"}${ic("next")}</button></div>
-  </div></div></div>`;
+  body+=`<div class="done" id="done" hidden><button class="k-btn k-btn-secondary hear" id="hear">${ic("speaker","k-icon sm")}Hear it</button><button class="k-btn k-btn-primary k-btn-lg chunky nextcard" id="next"><span class="tick" aria-hidden="true"></span>${last?"Finish level":"Next card"}${ic("next")}</button></div>`;
+  $("#app").innerHTML=header()+`<div class="deck${last?" last":""}"><div class="card" id="card">${body}</div></div>`;
   $("#quit").onclick=()=>home();
   $("#hear").onclick=()=>say(c.sayExtra||c.backWord);
-  $("#next").onclick=()=>{G.i++;G.i<G.cards.length?renderCard():finish()};
-  const front_=$("#front"), reveal=$("#reveal");
+  $("#next").onclick=goNext;
+  const card=$("#card");
   let solved=false;
-  const wrong=el=>{G.miss++;front_.classList.remove("shake");void front_.offsetWidth;front_.classList.add("shake");if(el){el.classList.add("wrong");el.setAttribute("aria-disabled","true");el.setAttribute("aria-label",`${el.textContent}, not this one`)}announce("Not quite. Try again.")};
-  const right=()=>{if(solved)return;solved=true;front_.inert=true;reveal.inert=false;$("#card").classList.add("flipped");say(c.sayExtra||c.backWord);announce(`Correct! ${c.backWord}`);setTimeout(()=>$("#next")&&$("#next").focus(),400)};
+  const wrong=el=>{G.miss++;card.classList.remove("shake");void card.offsetWidth;card.classList.add("shake");if(el){el.classList.add("wrong");el.setAttribute("aria-disabled","true");el.setAttribute("aria-label",`${el.textContent}, not this one`)}announce("Not quite. Try again.")};
+  const right=el=>{
+    if(solved)return;solved=true;keyHandler=null;
+    card.classList.remove("shake");card.classList.add("solved");
+    $("#ask").textContent=CHEERS[G.i%5];
+    // Show the completed answer where the question was.
+    const blank=card.querySelector(".blank");
+    if(blank){blank.textContent=c.answer;blank.classList.add("filled");blank.removeAttribute("aria-label");const w=blank.closest(".word");if(w)w.setAttribute("aria-label",c.backWord)}
+    if(c.kind==="choice"){card.querySelectorAll(".opt").forEach(b=>{b.disabled=true;if(b===el)b.classList.add("right")})}
+    else{card.querySelectorAll(".slot").forEach(s=>s.classList.add("ok"));$("#slots").setAttribute("aria-label","You spelled "+c.answer);$("#tiles").hidden=true;$("#undo").hidden=true}
+    const done=$("#done"), next=$("#next");done.hidden=false;
+    say(c.sayExtra||c.backWord);
+    announce(`Correct! ${c.backWord}. ${last?"Finishing the level":"Next card"} in ${WAIT/1000} seconds.`);
+    next.focus({preventScroll:true});
+    next.style.setProperty("--wait",WAIT+"ms");void next.offsetWidth;next.classList.add("counting");
+    const here=G;advance=setTimeout(()=>{advance=null;if(G===here&&G.cards[G.i]===c)goNext()},WAIT);
+  };
   keyHandler=null;
   if(c.kind==="choice"){
-    document.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{if(solved||b.classList.contains("wrong"))return;b.dataset.o===c.answer?right():wrong(b)});
+    document.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{if(solved||b.classList.contains("wrong"))return;b.dataset.o===c.answer?right(b):wrong(b)});
   }else{
     let typed=[], busy=false;
     const slots=[...document.querySelectorAll(".slot")], tiles=[...document.querySelectorAll(".tile")];
@@ -192,7 +238,7 @@ function renderCard(){
 }
 addEventListener("keydown",e=>{if(e.key==="Escape"&&G){home();return}if(keyHandler&&G)keyHandler(e)});
 function finish(){
-  keyHandler=null;
+  stopAdvance();keyHandler=null;
   const s=G.miss===0?3:G.miss<=2?2:1, lv=G.lv, wasNew=!P.stars[lv];
   P.stars[lv]=Math.max(P.stars[lv]||0,s);save();
   const nextLv=lv+1, hasNext=nextLv<=LEVELS.length, newTier=hasNext&&tierOf(nextLv)!==tierOf(lv);
