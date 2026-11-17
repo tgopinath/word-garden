@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Word Garden</title>
+<meta name="description" content="A card game that grows a child's English, one level at a time: match pictures to words, find the missing letter, spell with letter tiles, then finish sentences, opposites and rhymes.">
+<meta name="theme-color" content="#eaf5ee" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#10131b" media="(prefers-color-scheme: dark)">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- Lato comes with Kolam; Andika is a reading font made for early readers (single-storey a and g), used only for the words children read. -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&display=swap">
+<link rel="stylesheet" href="kolam/tokens.css">
+<link rel="stylesheet" href="kolam/kolam.css">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<main class="wrap" id="app" aria-live="off"></main>
+<p class="k-sr-only" id="say" aria-live="assertive"></p>
+<noscript><p class="wrap">Word Garden needs JavaScript to run.</p></noscript>
+<script src="app.js"></script>
+<script>
+if ('serviceWorker' in navigator && location.protocol === 'https:') addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
+</script>
+</body>
+</html>
