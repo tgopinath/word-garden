@@ -24,6 +24,7 @@ Children aged about 4 to 7 who are starting to read English need lots of short, 
 
 ## Data
 - Hand-written word bank (161 picture words, 20 sentences, 15 opposites, 15 rhymes). Pictures are Microsoft Fluent Emoji 3D PNGs (MIT), bundled in img/.
+- Sound effects: a chime for right and a soft "uh-oh" for wrong, generated with Web Audio; Sound on/off toggle on the home screen.
 - Speech: the device's own text-to-speech (Web Speech API; native TTS plugin in the Android shell).
 - Progress: localStorage only, no account.
 

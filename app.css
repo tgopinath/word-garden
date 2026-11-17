@@ -35,6 +35,8 @@ button { font: inherit; color: inherit; }
 .brand { display: flex; align-items: center; gap: var(--space-2); font: 900 30px/1 var(--font-display); letter-spacing: -0.02em; margin: 0; }
 .brand svg { width: 36px; height: 36px; color: var(--primary); }
 .brand span { color: var(--primary-text); }
+.topr { display: flex; align-items: center; gap: var(--space-2); flex-wrap: wrap; }
+.soundbtn { border-radius: var(--radius-pill); min-height: 40px; padding: 0 14px 0 12px; }
 .pill { display: inline-flex; align-items: center; gap: 6px; background: var(--surface); border: var(--border-control) solid var(--line); border-radius: var(--radius-pill); padding: 6px 14px; font-weight: 900; font-variant-numeric: tabular-nums; }
 .hello { margin: var(--space-6) 0 var(--space-2); font: 700 22px/28px var(--font-display); text-wrap: balance; }
 .now { display: flex; gap: var(--space-4); align-items: center; flex-wrap: wrap; background: var(--surface); border: var(--border-control) solid var(--line); border-radius: var(--radius-xl); padding: var(--space-4); box-shadow: var(--shadow-2); margin-bottom: var(--space-8); }

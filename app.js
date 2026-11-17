@@ -45,6 +45,7 @@ const ICON={
   lock:'<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>',
   unlock:'<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 7.7-1.5"/>',
   speaker:'<path d="M11 5 6 9H3v6h3l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/>',
+  mute:'<path d="M11 5 6 9H3v6h3l5 4V5z"/><path d="m16 9 6 6M22 9l-6 6"/>',
   trophy:'<path d="M8 4h8v5a4 4 0 0 1-8 0V4z"/><path d="M16 6h3a3 3 0 0 1-3 4M8 6H5a3 3 0 0 0 3 4"/><path d="M12 13v4M8 21h8M9 17h6v4H9z"/>',
   back:'<path d="m15 18-6-6 6-6"/>',
   next:'<path d="M5 12h14M13 6l6 6-6 6"/>',
@@ -108,6 +109,18 @@ function say(t){
   try{const u=new SpeechSynthesisUtterance(t);u.rate=.8;u.lang="en-US";if(voice)u.voice=voice;speechSynthesis.cancel();speechSynthesis.speak(u)}catch(e){}
 }
 function hush(){try{NATIVE_TTS?NATIVE_TTS.stop().catch(()=>{}):speechSynthesis.cancel()}catch(e){}}
+// ---------- sound effects (Web Audio, no files) ----------
+// Right: a rising triangle chime C5-E5-G5-C6. Wrong: a soft low sawtooth "uh-oh". The toggle mutes these only, not the spoken word.
+let AC=null;
+const soundOn=()=>P.sound!==false;
+function unlockAudio(){try{AC=AC||new(window.AudioContext||window.webkitAudioContext)();if(AC.state==="suspended")AC.resume()}catch(e){}}
+function tone(f,at,dur,type,vol){const o=AC.createOscillator(),g=AC.createGain();o.type=type;o.frequency.setValueAtTime(f,at);g.gain.setValueAtTime(0,at);g.gain.linearRampToValueAtTime(vol,at+.015);g.gain.exponentialRampToValueAtTime(.0001,at+dur);o.connect(g).connect(AC.destination);o.start(at);o.stop(at+dur+.05)}
+function sfx(kind){if(!soundOn())return;try{unlockAudio();const t=AC.currentTime+.01;
+  if(kind==="right")[523.25,659.25,783.99,1046.5].forEach((f,i)=>tone(f,t+i*.08,.32,"triangle",.22));
+  else{tone(196,t,.14,"sawtooth",.07);tone(147,t+.13,.26,"sawtooth",.07)}}catch(e){}}
+// Browsers only start audio after a gesture; unlock on the first tap or key so the delayed spelling result can still play.
+document.addEventListener("pointerdown",unlockAudio);
+document.addEventListener("keydown",unlockAudio);
 const announce=t=>{const n=$("#say");n.textContent="";setTimeout(()=>n.textContent=t,30)};
 const KEY="word-garden-v2"; // v2: 40 levels (v1 had 12 with different numbering)
 function load(){try{const p=JSON.parse(localStorage.getItem(KEY));return p&&p.stars?p:{stars:{}}}catch(e){return{stars:{}}}}
@@ -125,7 +138,7 @@ function home(focusSel){
   stopAdvance();G=null;hush();
   const next=unlockedUpTo(), done=finished(), t=TIERS[tierOf(next)];
   const allDone=done>=LEVELS.length;
-  let h=`<div class="top"><h1 class="brand">${LOGO}Word <span>Garden</span></h1><div class="pill" role="img" aria-label="${totalStars()} of ${LEVELS.length*3} stars">${oneStar} ${totalStars()} / ${LEVELS.length*3}</div></div>
+  let h=`<div class="top"><h1 class="brand">${LOGO}Word <span>Garden</span></h1><div class="topr"><div class="pill" role="img" aria-label="${totalStars()} of ${LEVELS.length*3} stars">${oneStar} ${totalStars()} / ${LEVELS.length*3}</div><button class="k-btn k-btn-outline k-btn-sm soundbtn" id="snd" aria-pressed="${soundOn()}">${ic(soundOn()?"speaker":"mute","k-icon sm")}Sound ${soundOn()?"on":"off"}</button></div></div>
   <p class="hello">${done?`You finished ${done} level${done>1?"s":""}. Your garden is growing!`:"Hi! Let’s grow your first words."}</p>
   <div class="now"><span class="badge">${art(allDone?"🏆":t.e)}</span><div><small>${allDone?"Every level finished":"Your difficulty now"}</small><b>${allDone?"Word Master!":`${t.name} · Level ${next}`}</b><small>${allDone?"Replay any level to collect more stars":t.skill}</small></div>
   <button class="k-btn k-btn-primary k-btn-lg chunky go" data-play="${allDone?1:next}">${allDone?"Play again":"Play level "+next}${ic("next")}</button></div><div class="home-grid">`;
@@ -143,8 +156,9 @@ function home(focusSel){
   <p class="credit">Progress stays on this device. Words are read aloud by the device’s own voice.</p>`;
   $("#app").innerHTML=h;
   document.querySelectorAll("[data-play]").forEach(b=>b.onclick=()=>start(+b.dataset.play));
+  $("#snd").onclick=()=>{P.sound=!soundOn();save();if(P.sound){unlockAudio();sfx("right")}home("#snd");announce(P.sound?"Sound on":"Sound off")};
   const r=$("#reset");if(r)r.onclick=()=>{confirmReset=true;home("#no")};
-  const y=$("#yes");if(y)y.onclick=()=>{P={stars:{}};save();confirmReset=false;home("#reset");announce("Progress cleared")};
+  const y=$("#yes");if(y)y.onclick=()=>{P={stars:{},sound:P.sound};save();confirmReset=false;home("#reset");announce("Progress cleared")};
   const n=$("#no");if(n)n.onclick=()=>{confirmReset=false;home("#reset")};
   if(focusSel&&$(focusSel))$(focusSel).focus();
 }
@@ -195,7 +209,7 @@ function renderCard(){
   $("#next").onclick=goNext;
   const card=$("#card");
   let solved=false;
-  const wrong=el=>{G.miss++;card.classList.remove("shake");void card.offsetWidth;card.classList.add("shake");if(el){el.classList.add("wrong");el.setAttribute("aria-disabled","true");el.setAttribute("aria-label",`${el.textContent}, not this one`)}announce("Not quite. Try again.")};
+  const wrong=el=>{G.miss++;sfx("wrong");card.classList.remove("shake");void card.offsetWidth;card.classList.add("shake");if(el){el.classList.add("wrong");el.setAttribute("aria-disabled","true");el.setAttribute("aria-label",`${el.textContent}, not this one`)}announce("Not quite. Try again.")};
   const right=el=>{
     if(solved)return;solved=true;keyHandler=null;
     card.classList.remove("shake");card.classList.add("solved");
@@ -206,7 +220,8 @@ function renderCard(){
     if(c.kind==="choice"){card.querySelectorAll(".opt").forEach(b=>{b.disabled=true;if(b===el)b.classList.add("right")})}
     else{card.querySelectorAll(".slot").forEach(s=>s.classList.add("ok"));$("#slots").setAttribute("aria-label","You spelled "+c.answer);$("#tiles").hidden=true;$("#undo").hidden=true}
     const done=$("#done"), next=$("#next");done.hidden=false;
-    say(c.sayExtra||c.backWord);
+    sfx("right");
+    const spoken=c;setTimeout(()=>{if(G&&G.cards[G.i]===spoken)say(c.sayExtra||c.backWord)},450); // after the chime
     announce(`Correct! ${c.backWord}. ${last?"Finishing the level":"Next card"} in ${WAIT/1000} seconds.`);
     next.focus({preventScroll:true});
     next.style.setProperty("--wait",WAIT+"ms");void next.offsetWidth;next.classList.add("counting");
