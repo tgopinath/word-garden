@@ -55,6 +55,8 @@ const ICON={
 // Card pictures: Microsoft Fluent Emoji 3D (MIT), one PNG per emoji in img/, named by code points without FE0F.
 const artSrc=e=>"img/u"+[...e.replace(/\uFE0F/g,"")].map(c=>c.codePointAt(0).toString(16)).join("-")+".png";
 const art=(e,cls="")=>`<img class="art ${cls}" src="${artSrc(e)}" alt="" draggable="false" onerror="this.replaceWith(document.createTextNode('${e}'))">`;
+// Every screen except the map itself has the same labelled Home button (Esc also goes home).
+const homeBtn=id=>`<button class="k-btn k-btn-outline chunky homebtn" id="${id}" title="Back to the level map (Esc)">${art("🏠")}Home</button>`;
 const levelPic=L=>L.words?L.words[0][1]:L.type==="sent"?L.items[0].e:L.items[0][2];
 const ic=(n,cls="k-icon")=>`<svg class="${cls}" viewBox="0 0 24 24" aria-hidden="true">${ICON[n]}</svg>`;
 const STAR='<path d="M12 2.8l2.8 5.7 6.3.9-4.55 4.4 1.07 6.25L12 17.1l-5.62 2.95 1.07-6.25L2.9 9.4l6.3-.9z"/>';
@@ -168,11 +170,11 @@ function start(lv){confirmReset=false;const L=LEVELS[lv-1];G={lv,L,cards:buildCa
 function header(){
   const pct=G.i/G.cards.length*100, t=TIERS[tierOf(G.lv)], L=G.L;
   const diff=L.type==="spell"?`${L.extra?L.extra+" decoy letter"+(L.extra>1?"s":""):"No decoys"}`:L.opts?`${L.opts} choices`:"";
-  return `<div class="bar"><button class="k-btn k-btn-outline quit" id="quit" aria-label="Back to the map">${ic("back")}</button><div class="k-progress-track" role="progressbar" aria-label="Cards done" aria-valuemin="0" aria-valuemax="${G.cards.length}" aria-valuenow="${G.i}"><div class="k-progress-fill" style="width:${pct}%"></div></div><div class="count" aria-label="Card ${G.i+1} of ${G.cards.length}">${G.i+1}/${G.cards.length}</div></div>
+  return `<div class="bar">${homeBtn("quit")}<div class="k-progress-track" role="progressbar" aria-label="Cards done" aria-valuemin="0" aria-valuemax="${G.cards.length}" aria-valuenow="${G.i}"><div class="k-progress-fill" style="width:${pct}%"></div></div><div class="count" aria-label="Card ${G.i+1} of ${G.cards.length}">${G.i+1}/${G.cards.length}</div></div>
   <div class="meta"><span class="k-badge k-badge-pill k-badge-primary">Level ${G.lv}</span><span class="k-badge k-badge-pill">${ic(t.icon,"k-icon")} ${t.name}</span><span class="k-badge k-badge-pill">${G.cards.length} cards</span>${diff?`<span class="k-badge k-badge-pill">${diff}</span>`:""}</div>`;
 }
 let keyHandler=null, advance=null;
-const WAIT=4000; // after a right answer, move on by itself after 4 s (Next skips the wait)
+const WAIT=2000; // after a right answer, move on by itself after 2 s (Next skips the wait)
 function stopAdvance(){if(advance){clearTimeout(advance);advance=null}}
 function goNext(){stopAdvance();if(!G)return;G.i++;G.i<G.cards.length?renderCard():finish()}
 const CHEERS=["Great job!","Super!","You got it!","Awesome!","Well done!"];
@@ -252,7 +254,7 @@ function finish(){
   <h1 id="done" tabindex="-1">Level ${lv} done!</h1><p>${miss===0?"Perfect, not a single slip!":`You found every answer, with ${miss} slip${miss>1?"s":""} along the way.`}${s<3?" A perfect round earns 3 stars.":""}</p>
   ${hasNext&&wasNew?`<div class="unlock">${newTier?`${art(t.e)}<span>New difficulty unlocked: <b>${t.name}</b><br>${t.skill}</span>`:`${ic("unlock")}<span>Level ${nextLv} is open. It’s a little harder!</span>`}</div>`:""}
   ${!hasNext?`<div class="unlock">${art("🏆")}<span>You finished the whole garden!</span></div>`:""}
-  <div class="row">${s<3?`<button class="k-btn k-btn-outline chunky" id="again">${ic("replay","k-icon sm")}Try for 3 stars</button>`:""}${hasNext?`<button class="k-btn k-btn-primary chunky" id="go">Level ${nextLv}${ic("next","k-icon sm")}</button>`:""}<button class="k-btn k-btn-outline chunky" id="map">${ic("map","k-icon sm")}Map</button></div></div>`;
+  <div class="row">${s<3?`<button class="k-btn k-btn-outline chunky" id="again">${ic("replay","k-icon sm")}Try for 3 stars</button>`:""}${hasNext?`<button class="k-btn k-btn-primary chunky" id="go">Level ${nextLv}${ic("next","k-icon sm")}</button>`:""}${homeBtn("map")}</div></div>`;
   const a=$("#again");if(a)a.onclick=()=>start(lv);
   const g=$("#go");if(g)g.onclick=()=>start(nextLv);
   $("#map").onclick=()=>home();

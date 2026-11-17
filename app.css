@@ -75,7 +75,8 @@ button { font: inherit; color: inherit; }
 
 /* ---------- play ---------- */
 .bar { display: flex; align-items: center; gap: 12px; }
-.quit { width: var(--size-target-min); height: var(--size-target-min); padding: 0; flex: none; }
+.homebtn { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; height: 44px; padding: 0 14px 0 10px; border-radius: 14px; flex: none; }
+.homebtn .art { width: 26px; height: 26px; }
 .bar .k-progress-track { flex: 1; height: 14px; }
 .bar .k-progress-fill { transition: width var(--duration-slow); }
 .count { font-weight: 900; font-variant-numeric: tabular-nums; min-width: 44px; text-align: right; }
@@ -127,10 +128,10 @@ button { font: inherit; color: inherit; }
 .slot.ok { border-style: solid; border-color: var(--primary); background: var(--primary-soft); color: var(--primary-text); }
 .done { display: flex; gap: 10px; align-items: center; justify-content: center; flex-wrap: wrap; margin-top: 4px; }
 [hidden] { display: none !important; }
-/* The Next button fills over the auto-advance wait (4 s). */
+/* The Next button fills over the auto-advance wait (2 s). */
 .nextcard { position: relative; overflow: hidden; isolation: isolate; }
 .nextcard .tick { position: absolute; inset: 0; z-index: -1; background: var(--primary-edge); transform-origin: left; transform: scaleX(0); }
-.nextcard.counting .tick { transform: scaleX(1); transition: transform var(--wait, 4s) linear; }
+.nextcard.counting .tick { transform: scaleX(1); transition: transform var(--wait, 2s) linear; }
 
 /* ---------- result ---------- */
 .result { text-align: center; max-width: 440px; margin: var(--space-8) auto 0; background: var(--surface); border: 3px solid var(--line); border-radius: 28px; padding: var(--space-8) var(--space-6); box-shadow: var(--shadow-2); }
