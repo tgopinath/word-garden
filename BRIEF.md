@@ -21,9 +21,11 @@ Children aged about 4 to 7 who are starting to read English need lots of short, 
    - Big Tree L31–40: 20 sentences, 15 opposites, 15 rhymes.
    - No word is a question in two levels.
 3. **Level result:** 1–3 stars from the number of slips, what unlocked, try again for 3 stars.
-4. **Settings:** the child's name, buddy picture, favourite colour, cheer style (Cheerful, Calm, Silly), reading voice speed and sound effects.
+4. **Settings:** the child's name, buddy picture, favourite colour, cheer style (Cheerful, Calm, Silly), reading voice speed, pictures (Photos or Cartoons) and sound effects.
+5. **Photo credits:** title, creator, licence and source for every photo.
 
 ## Data
+- Photos: 142 Openverse photos (CC BY / BY-SA / CC0 / PDM), credited in-app; cartoon fallback for the rest.
 - Hand-written word bank (161 picture words, 20 sentences, 15 opposites, 15 rhymes). Pictures are Microsoft Fluent Emoji 3D PNGs (MIT), bundled in img/.
 - Sound effects: a chime for right and a soft "uh-oh" for wrong, generated with Web Audio.
 - Settings (screen 4): name, buddy, favourite colour, cheer style, reading voice speed and sound effects, saved on the device; Start over keeps them.

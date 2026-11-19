@@ -59,6 +59,13 @@ const art=(e,cls="")=>`<img class="art ${cls}" src="${artSrc(e)}" alt="" draggab
 // Every screen except the map itself has the same labelled Home button (Esc also goes home).
 const homeBtn=id=>`<button class="k-btn k-btn-outline chunky homebtn" id="${id}" title="Back to the level map (Esc)">${art("🏠")}Home</button>`;
 const levelPic=L=>L.words?L.words[0][1]:L.type==="sent"?L.items[0].e:L.items[0][2];
+// Real photos (Openverse, Creative Commons; photos/photos.js maps emoji -> photos/<word>.jpg). Settings: Pictures = Photos (default) or Cartoons.
+// People, symbols and abstract pictures have no photo and stay cartoon; a photo that fails to load falls back to the cartoon.
+const PHOTOS=window.PHOTOS||{};
+const BIG_TREE_CARTOON=new Set(["☀️"]); // sun/day in Big Tree stays a cartoon
+const usePhotos=()=>P.pics!=="cartoons";
+const pic=(e,cls="",bigTree=false)=>{const f=usePhotos()&&!(bigTree&&BIG_TREE_CARTOON.has(e))&&PHOTOS[e];
+  return f?`<img class="art photo ${cls}" src="photos/${f}.jpg" alt="" draggable="false" onerror="this.onerror=null;this.classList.remove('photo');this.src='${artSrc(e)}'">`:art(e,cls)};
 const ic=(n,cls="k-icon")=>`<svg class="${cls}" viewBox="0 0 24 24" aria-hidden="true">${ICON[n]}</svg>`;
 const STAR='<path d="M12 2.8l2.8 5.7 6.3.9-4.55 4.4 1.07 6.25L12 17.1l-5.62 2.95 1.07-6.25L2.9 9.4l6.3-.9z"/>';
 const oneStar=`<svg class="star on" viewBox="0 0 24 24" aria-hidden="true">${STAR}</svg>`;
@@ -134,6 +141,7 @@ const COLORS=[["leaf","Leaf","#2FB36F"],["ocean","Ocean","#3B7FEB"],["berry","Be
 const CHEER_SETS={cheerful:["Great job!","Super!","You got it!","Awesome!","Well done!"],calm:["Well done.","That's right.","Nice work.","Good thinking.","Correct."],silly:["Woohoo!","Banana-tastic!","Super-duper!","Wiggle dance!","Yippee!"]};
 const CHEER_NAMES=[["cheerful","Cheerful"],["calm","Calm"],["silly","Silly"]];
 const RATES=[[.65,"Slow"],[.8,"Normal"],[1,"Fast"]];
+const PICS=[["photos","Photos"],["cartoons","Cartoons"]];
 const kidName=()=>(P.name||"").trim();
 const buddy=()=>P.avatar||"🐱";
 const cheerText=i=>{const c=(CHEER_SETS[P.cheer]||CHEER_SETS.cheerful)[i%5], n=kidName();return n?c.replace(/([.!?])$/,`, ${n}$1`):c};
@@ -148,6 +156,18 @@ const LOGO='<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="curr
 // ---------- home ----------
 let confirmReset=false, VIEW="home";
 // ---------- settings ----------
+// ---------- photo credits ----------
+async function credits(){
+  VIEW="credits";stopAdvance();G=null;keyHandler=null;
+  $("#app").innerHTML=`<div class="sethead">${homeBtn("quit")}<h1 id="credt" tabindex="-1">Photo credits</h1></div><p class="credintro">Photos from <a href="https://openverse.org" target="_blank" rel="noopener">Openverse</a>, used under their Creative Commons or public-domain licences. Most are resized and cropped to a square. Cartoon pictures: Microsoft Fluent Emoji 3D (MIT).</p><div id="credlist" class="credlist" aria-busy="true">Loading…</div>`;
+  $("#quit").onclick=()=>home("#set");$("#credt").focus();
+  try{
+    const list=await (await fetch("photos/credits.json")).json(), box=$("#credlist");
+    if(VIEW!=="credits")return;
+    box.removeAttribute("aria-busy");
+    box.innerHTML=`<ul>${Object.entries(list).sort((a,b)=>a[0].localeCompare(b[0])).map(([w,c])=>`<li><img src="photos/${esc(w)}.jpg" alt="" loading="lazy"><div><b>${esc(w)}</b><span>“${esc(c.title||"Untitled")}” by ${esc(c.creator||"unknown")}</span><span><a href="${esc(c.license_url)}" target="_blank" rel="noopener">${esc(c.license_name)}</a> · <a href="${esc(c.source_url)}" target="_blank" rel="noopener">Source</a>${c.cropped?" · cropped":""}</span></div></li>`).join("")}</ul>`;
+  }catch(e){$("#credlist").textContent="The credits list could not be loaded. Check your connection and try again."}
+}
 function radios(name,label,items,cur,render){ // items: [value, inner html, accessible label]
   return `<div class="chips" role="radiogroup" aria-label="${label}" data-group="${name}">${items.map(([v,html,al],i)=>{const on=String(v)===String(cur);
     return `<button type="button" class="chip${html.startsWith("<img")?" pic":""}" role="radio" aria-checked="${on}" tabindex="${on?0:-1}" id="${name}-${i}" data-v="${esc(v)}"${al?` aria-label="${esc(al)}"`:""}>${html}</button>`}).join("")}</div>`;
@@ -162,17 +182,19 @@ function settings(focusSel){
     <section class="setsec"><h2>Favourite colour</h2>${radios("col","Favourite colour",COLORS.map(([k,n,h])=>[k,`<span class="swatch" style="background:${h}"></span>${n}`]),document.documentElement.dataset.color)}</section>
     <section class="setsec"><h2>Cheer style</h2>${radios("ch","Cheer style",CHEER_NAMES.map(([k,n])=>[k,n]),CHEER_SETS[P.cheer]?P.cheer:"cheerful")}<p class="preview" id="pv">Your buddy says: <q>${esc(cheerText(0))}</q></p></section>
     <section class="setsec"><h2>Reading voice</h2>${radios("rt","Reading voice",RATES.map(([r,n])=>[r,n]),P.rate||.8)}</section>
+    <section class="setsec"><h2>Pictures</h2>${radios("pc","Pictures",PICS,usePhotos()?"photos":"cartoons")}<p class="preview">Real photos come from Openverse under Creative Commons licences. <button class="linkbtn inline" id="cred">Photo credits</button></p></section>
     <section class="setsec"><h2>Sound effects</h2><button class="k-btn k-btn-outline soundbtn" id="snd" aria-pressed="${sw}">${ic(sw?"speaker":"mute","k-icon sm")}Sound effects ${sw?"on":"off"}</button></section>
   </div>`;
   $("#quit").onclick=()=>home("#set");
   const nm=$("#nm");
   nm.oninput=()=>{P.name=nm.value.slice(0,16);save();$("#pv q").textContent=cheerText(0)};
-  const pick={av:v=>{P.avatar=v},col:v=>{P.color=v;applyColor()},ch:v=>{P.cheer=v},rt:v=>{P.rate=+v;say(`Hello ${kidName()}`.trim())}};
+  const pick={pc:v=>{P.pics=v},av:v=>{P.avatar=v},col:v=>{P.color=v;applyColor()},ch:v=>{P.cheer=v},rt:v=>{P.rate=+v;say(`Hello ${kidName()}`.trim())}};
   document.querySelectorAll("[data-group]").forEach(g=>{
     const chips=[...g.querySelectorAll(".chip")], name=g.dataset.group;
     const choose=i=>{pick[name](chips[i].dataset.v);save();settings(`#${name}-${i}`)};
     chips.forEach((c,i)=>{c.onclick=()=>choose(i);c.onkeydown=e=>{const d={ArrowRight:1,ArrowDown:1,ArrowLeft:-1,ArrowUp:-1}[e.key];if(d){e.preventDefault();choose((i+d+chips.length)%chips.length)}}});
   });
+  $("#cred").onclick=()=>credits();
   $("#snd").onclick=()=>{P.sound=!soundOn();save();if(P.sound){unlockAudio();sfx("right")}settings("#snd");announce(P.sound?"Sound effects on":"Sound effects off")};
   (focusSel&&$(focusSel)||$("#sett")).focus();
 }
@@ -184,12 +206,17 @@ function home(focusSel){
   <div class="hello"><span class="buddy">${art(buddy())}</span><p><b>Hi${kidName()?" "+esc(kidName()):""}!</b><span class="line">${done?`You finished ${done} level${done>1?"s":""}. Your garden is growing!`:"Let’s grow your first words."}</span></p></div>
   <div class="now"><span class="badge">${art(allDone?"🏆":t.e)}</span><div><small>${allDone?"Every level finished":"Your difficulty now"}</small><b>${allDone?"Word Master!":`${t.name} · Level ${next}`}</b><small>${allDone?"Replay any level to collect more stars":t.skill}</small></div>
   <button class="k-btn k-btn-primary k-btn-lg chunky go" data-play="${allDone?1:next}">${allDone?"Play again":"Play level "+next}${ic("next")}</button></div><div class="home-grid">`;
+  // A stage shows once the stage before it is finished; the next stage is a locked teaser, later ones stay hidden.
+  const open=TIERS.filter((_,ti)=>ti===0||allDone||P.stars[ti*PER_STAGE]).length;
+  const teaser=open<TIERS.length?TIERS[open]:null, shown=open+(teaser?1:0);
   TIERS.forEach((tr,ti)=>{
+    if(ti===open&&teaser){h+=`<section class="tier teaser${shown%2?" wide":""}" aria-label="${tr.name}, locked"><span class="ti">${art(tr.e)}</span><div><h2>${tr.name}</h2><p>${ic("lock","k-icon sm")}Opens when you finish ${TIERS[ti-1].name} level ${ti*PER_STAGE}</p></div></section>`;return}
+    if(ti>=open)return;
     h+=`<section class="tier" aria-labelledby="tier${ti}"><h2 id="tier${ti}"><span class="ti">${art(tr.e)}</span>${tr.name} <em>${tr.skill}</em></h2><div class="levels">`;
     for(let k=1;k<=PER_STAGE;k++){
       const lv=ti*PER_STAGE+k, s=P.stars[lv]||0, locked=lv>next, isNext=lv===next&&!P.stars[lv];
       h+=`<button class="lv${isNext?" next":""}" data-play="${lv}" ${locked?"disabled":""} aria-label="Level ${lv}${locked?", locked":s?`, ${s} star${s>1?"s":""}`:isNext?", play next":""}">
-        <span class="n">${lv}</span>${locked?`<span class="lk">${ic("lock")}</span>`:""}<span class="thumb">${art(levelPic(LEVELS[lv-1]))}</span>
+        <span class="n">${lv}</span>${locked?`<span class="lk">${ic("lock")}</span>`:""}<span class="thumb">${pic(levelPic(LEVELS[lv-1]),"",lv>3*PER_STAGE)}</span>
         <div class="st">${starRow(s)}</div></button>`;
     }
     h+=`</div></section>`;
@@ -206,11 +233,11 @@ function home(focusSel){
 }
 
 // ---------- build cards ----------
-const picFront=(e,sm)=>`<div class="pic${sm?" sm":""}" role="img" aria-label="Picture clue">${art(e)}</div>`;
+const picFront=(e,sm,bigTree)=>`<div class="pic${sm?" sm":""}" role="img" aria-label="Picture clue">${pic(e,"",bigTree)}</div>`;
 function buildCards(L){
-  if(L.type==="sent")return shuffle(L.items).map(x=>({kind:"choice",prompt:`${picFront(x.e,1)}<div class="sentence">${x.s.replace("___",'<span class="blank" aria-label="blank">?</span>')}</div>`,ask:"Finish the sentence",answer:x.a,opts:shuffle([x.a,...sample(x.o,L.opts-1)]),back:x.e,backWord:x.s.replace("___",x.a)}));
-  if(L.type==="opp")return shuffle(L.items).map(x=>({kind:"choice",ask:"What is the opposite?",prompt:`${picFront(x[2],1)}<div class="word">${x[0]}</div>`,answer:x[1],opts:shuffle([x[1],...sample(OPP.filter(o=>o!==x&&!(x[4]||[]).includes(o[1])).map(o=>o[1]),L.opts-1)]),back:x[3],backWord:x[1],sayExtra:`${x[0]} and ${x[1]}`}));
-  if(L.type==="rhy")return shuffle(L.items).map(x=>({kind:"choice",ask:"Which word rhymes?",prompt:`${picFront(x[2],1)}<div class="word">${x[0]}</div>`,answer:x[1],opts:shuffle([x[1],...sample(RHY.filter(o=>o!==x).map(o=>o[1]),L.opts-1)]),back:x[3],backWord:x[1],sayExtra:`${x[0]}, ${x[1]}`}));
+  if(L.type==="sent")return shuffle(L.items).map(x=>({kind:"choice",prompt:`${picFront(x.e,1,1)}<div class="sentence">${x.s.replace("___",'<span class="blank" aria-label="blank">?</span>')}</div>`,ask:"Finish the sentence",answer:x.a,opts:shuffle([x.a,...sample(x.o,L.opts-1)]),back:x.e,backWord:x.s.replace("___",x.a)}));
+  if(L.type==="opp")return shuffle(L.items).map(x=>({kind:"choice",ask:"What is the opposite?",prompt:`${picFront(x[2],1,1)}<div class="word">${x[0]}</div>`,answer:x[1],opts:shuffle([x[1],...sample(OPP.filter(o=>o!==x&&!(x[4]||[]).includes(o[1])).map(o=>o[1]),L.opts-1)]),back:x[3],backWord:x[1],sayExtra:`${x[0]} and ${x[1]}`}));
+  if(L.type==="rhy")return shuffle(L.items).map(x=>({kind:"choice",ask:"Which word rhymes?",prompt:`${picFront(x[2],1,1)}<div class="word">${x[0]}</div>`,answer:x[1],opts:shuffle([x[1],...sample(RHY.filter(o=>o!==x).map(o=>o[1]),L.opts-1)]),back:x[3],backWord:x[1],sayExtra:`${x[0]}, ${x[1]}`}));
   return shuffle(L.words).map(([w,e])=>{
     // Wrong picture choices come from words of the same length, which makes them harder to rule out.
     if(L.type==="pick")return{kind:"choice",ask:"Which word is this?",prompt:picFront(e),answer:w,opts:shuffle([w,...sample(BY_LEN[w.length].filter(p=>p[0]!==w).map(p=>p[0]),L.opts-1)]),back:e,backWord:w};
@@ -298,7 +325,7 @@ function renderCard(){
   }
   $("#ask").focus({preventScroll:true});
 }
-addEventListener("keydown",e=>{if(e.key==="Escape"&&(G||VIEW==="settings")){home(VIEW==="settings"?"#set":undefined);return}if(keyHandler&&G)keyHandler(e)});
+addEventListener("keydown",e=>{if(e.key==="Escape"&&(G||VIEW==="settings"||VIEW==="credits")){home(VIEW!=="play"?"#set":undefined);return}if(keyHandler&&G)keyHandler(e)});
 function finish(){
   stopAdvance();keyHandler=null;
   const s=G.miss===0?3:G.miss<=2?2:1, lv=G.lv, wasNew=!P.stars[lv];
